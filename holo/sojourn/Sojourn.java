@@ -1,11 +1,13 @@
 package holo.sojourn;
 
+import holo.sojourn.proxy.CommonProxy;
 import res.string.Strings;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -18,10 +20,10 @@ public class Sojourn
     @Instance(Strings.MAIN_MOD_ID)
     public static Sojourn instance;
     
-    /*@SidedProxy
+    @SidedProxy
     (clientSide = Strings.clientProxy, 
         serverSide = Strings.commonProxy)
-    public static CommonProxy proxy;*/
+    public static CommonProxy proxy;
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
