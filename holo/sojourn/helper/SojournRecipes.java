@@ -1,9 +1,9 @@
 package holo.sojourn.helper;
 
-public class SojournItems
+public class SojournRecipes
 {
 
-    public static void initItems()
+    public static void initRecipes()
     {
         // TODO Auto-generated method stub
         
