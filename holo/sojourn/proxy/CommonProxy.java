@@ -9,9 +9,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy {
-    
-    public static int START_EID = 130;
+public class CommonProxy 
+{
 
     public void init(FMLInitializationEvent event) {
         entityRegistry();
