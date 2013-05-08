@@ -10,5 +10,4 @@ public class PortalFrame extends Block
     {
         super(par1, par2Material);
     }
-
 }

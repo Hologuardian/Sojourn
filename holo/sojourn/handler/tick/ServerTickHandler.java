@@ -26,7 +26,7 @@ public class ServerTickHandler implements ITickHandler
     @Override
     public String getLabel()
     {
-        return "Falling Earth Server Tick Handler";
+        return "Sojourn Server Tick Handler";
     }
 
     public void onTickInGame()
