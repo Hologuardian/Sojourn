@@ -99,7 +99,6 @@ public class Group implements IPlayerTracker
         {
             if (player != null)
             {
-                player.sendChatToPlayer("RENDER");
                 icons.get(playerList.indexOf(player)).renderIcon(this, player);
             }
         }

@@ -16,18 +16,35 @@ public class ClientTickHandler implements ITickHandler
     public static final Minecraft mc = Minecraft.getMinecraft();
     
     @Override
-    public void tickStart(EnumSet var1, Object ... var2) {}
-
-    @Override
-    public void tickEnd(EnumSet var1, Object ... var2)
+    public void tickStart(EnumSet var1, Object ... var2) 
     {
         onTickInGame();
     }
 
     @Override
+    public void tickEnd(EnumSet var1, Object ... mc)
+    {
+        if (var1.equals(EnumSet.of(TickType.RENDER)))
+        {
+            onRenderTick();
+        }
+    }
+
+    public void onRenderTick()
+    {
+        EntityPlayer player = mc.thePlayer;
+        if (player != null)
+        {
+            Group playerGroup = GroupManager.groups().getGroupFromPlayer(player);
+            if (playerGroup != null)
+                playerGroup.renderIcons();
+        }
+    }
+
+    @Override
     public EnumSet ticks()
     {
-        return EnumSet.of(TickType.CLIENT);
+        return EnumSet.of(TickType.CLIENT, TickType.RENDER);
     }
 
     @Override
@@ -38,16 +55,5 @@ public class ClientTickHandler implements ITickHandler
 
     public void onTickInGame()
     {
-        EntityPlayer player = mc.thePlayer;
-        if (player != null)
-        {
-            player.sendChatToPlayer("TICK");
-            Group playerGroup = GroupManager.groups().getGroupFromPlayer(player);
-            
-            if (playerGroup != null)
-            {
-                playerGroup.renderIcons();
-            }
-        }
     }
 }
