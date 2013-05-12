@@ -32,12 +32,15 @@ public class GroupIcon extends Gui
     
     public void renderIcon(Group group, EntityPlayer player)
     {
-        int i = 1;
-        for (EntityPlayer p : group.getList())
+        if (mc.currentScreen == null || !mc.currentScreen.doesGuiPauseGame())
         {
-            drawPlayerOnGui(p, 20 * i, 50, 20, 0, 0);
-            drawPlayerHealthAndArmor(75 * i, 85, 4.35F);
-            i += 4;
+            int i = 0;
+            for (EntityPlayer p : group.getList())
+            {
+                drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
+                drawPlayerHealthAndArmor(p, 60, 85 + 50 * i, 4.35F);
+                i++;
+            }
         }
         ++this.updateCounter;
     }
@@ -76,7 +79,7 @@ public class GroupIcon extends Gui
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
     
-    public void drawPlayerHealthAndArmor(int xOffset, int yOffset, float targetSize)
+    public void drawPlayerHealthAndArmor(EntityPlayer player, int xOffset, int yOffset, float targetSize)
     {        
         this.mc.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
@@ -94,15 +97,15 @@ public class GroupIcon extends Gui
         int k3;
         
         this.mc.renderEngine.bindTexture("/gui/icons.png");
-        flag1 = this.mc.thePlayer.hurtResistantTime / 3 % 2 == 1;
+        flag1 = player.hurtResistantTime / 3 % 2 == 1;
 
-        if (this.mc.thePlayer.hurtResistantTime < 10)
+        if (player.hurtResistantTime < 10)
         {
             flag1 = false;
         }
 
-        i1 = this.mc.thePlayer.getHealth();
-        j1 = this.mc.thePlayer.prevHealth;
+        i1 = player.getHealth();
+        j1 = player.prevHealth;
         this.rand.setSeed(this.updateCounter * 312871);
         
         this.mc.mcProfiler.endStartSection("healthArmor");
@@ -118,18 +121,18 @@ public class GroupIcon extends Gui
         
         for (j4 = 0; j4 < 10; ++j4)
         {
-            if (this.mc.thePlayer.isPotionActive(Potion.regeneration))
+            if (player.isPotionActive(Potion.regeneration))
             {
                 i3 = this.updateCounter % 150 / 5;
             }
             
             j3 = 16;
 
-            if (this.mc.thePlayer.isPotionActive(Potion.poison))
+            if (player.isPotionActive(Potion.poison))
             {
                 j3 += 36;
             }
-            else if (this.mc.thePlayer.isPotionActive(Potion.wither))
+            else if (player.isPotionActive(Potion.wither))
             {
                 j3 += 72;
             }
