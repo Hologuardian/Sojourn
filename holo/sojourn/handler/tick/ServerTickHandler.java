@@ -1,13 +1,17 @@
 package holo.sojourn.handler.tick;
 
-import java.util.EnumSet;
+import holo.sojourn.essence.EssenceBar;
 
+import java.util.EnumSet;
+import java.util.Iterator;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class ServerTickHandler implements ITickHandler
 {
-
     @Override
     public void tickStart(EnumSet var1, Object ... var2) {}
 
@@ -31,5 +35,11 @@ public class ServerTickHandler implements ITickHandler
 
     public void onTickInGame()
     {
+        Iterator players = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+        while (players.hasNext())
+        {
+            EntityPlayerMP player = (EntityPlayerMP) players.next();
+            EssenceBar.bars().updateBar(player, 1);
+        }
     }
 }

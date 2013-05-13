@@ -4,13 +4,11 @@ import holo.sojourn.client.render.hud.GroupIcon;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.IPlayerTracker;
+import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.entity.player.EntityPlayer;
-
-public class Group implements IPlayerTracker
+public class Group
 {
     private ArrayList<EntityPlayer> playerList;
     private ArrayList<GroupIcon> icons;
@@ -69,28 +67,6 @@ public class Group implements IPlayerTracker
                 player.setPosition(summoner.posX, summoner.posY, summoner.posZ);
         }
     }
-
-    @Override
-    public void onPlayerLogin(EntityPlayer player){}
-
-    @Override
-    public void onPlayerLogout(EntityPlayer player)
-    {
-        playerList.remove(player);
-    }
-
-    @Override
-    public void onPlayerChangedDimension(EntityPlayer player)
-    {
-        for (EntityPlayer p : playerList)
-        {
-            if (p != null && p != player)
-                p.travelToDimension(player.dimension);
-        }
-    }
-
-    @Override
-    public void onPlayerRespawn(EntityPlayer player){}
     
     @SideOnly(Side.CLIENT)
     public void renderIcons()
@@ -99,7 +75,8 @@ public class Group implements IPlayerTracker
         {
             if (player != null)
             {
-                icons.get(playerList.indexOf(player)).renderIcon(this, player);
+                GroupIcon icon = icons.get(playerList.indexOf(player));
+                icon.renderIcon(this, player);
             }
         }
     }

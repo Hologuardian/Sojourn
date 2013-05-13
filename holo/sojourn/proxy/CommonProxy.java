@@ -1,7 +1,10 @@
 package holo.sojourn.proxy;
 
+import holo.sojourn.essence.EssenceBar;
+import holo.sojourn.group.GroupManager;
 import holo.sojourn.handler.tick.ServerTickHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -11,13 +14,13 @@ public class CommonProxy
     public void init(FMLInitializationEvent event) {
 //        entityRegistry();
           tickRegistry();
-//        eventRegistry();
+          eventRegistry();
 //        SojournItems.initItems();
 //        SojournBlocks.initBlocks();
 //        renderRegistry();
 //        SojournRecipes.initRecipes();
 //        SojournNames.initNames();
-        
+          
     }
     
     public void tickRegistry() {
@@ -27,7 +30,10 @@ public class CommonProxy
     public void renderRegistry() {
     }
     
-    public void eventRegistry() {
+    public void eventRegistry() 
+    {
+        GameRegistry.registerPlayerTracker(GroupManager.groups());
+        GameRegistry.registerPlayerTracker(EssenceBar.bars());
     }
     
     public void entityRegistry() 
