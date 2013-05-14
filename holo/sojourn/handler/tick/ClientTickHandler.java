@@ -1,5 +1,6 @@
 package holo.sojourn.handler.tick;
 
+import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.Group;
 import holo.sojourn.group.GroupManager;
 
@@ -38,6 +39,8 @@ public class ClientTickHandler implements ITickHandler
             Group playerGroup = GroupManager.groups().getGroupFromPlayer(player);
             if (playerGroup != null)
                 playerGroup.renderIcons();
+
+            EssenceBar.bars().renderBar(player);
         }
     }
 

@@ -39,7 +39,7 @@ public class ServerTickHandler implements ITickHandler
         while (players.hasNext())
         {
             EntityPlayerMP player = (EntityPlayerMP) players.next();
-            EssenceBar.bars().updateBar(player, 1);
+            EssenceBar.bars().updateBar(player, 2);
         }
     }
 }

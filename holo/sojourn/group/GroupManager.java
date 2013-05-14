@@ -39,7 +39,9 @@ public class GroupManager implements IPlayerTracker
     }
 
     @Override
-    public void onPlayerLogin(EntityPlayer player){}
+    public void onPlayerLogin(EntityPlayer player)
+    {
+    }
 
     @Override
     public void onPlayerLogout(EntityPlayer player)

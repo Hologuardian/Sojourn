@@ -1,12 +1,15 @@
 package holo.sojourn.essence;
 
-import java.util.HashMap;
+import holo.sojourn.client.render.hud.EssenceBarIcon;
 
-import cpw.mods.fml.common.IPlayerTracker;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EssenceBar implements IPlayerTracker
 {
@@ -15,6 +18,7 @@ public class EssenceBar implements IPlayerTracker
     public HashMap<String, float[]> ratios = new HashMap<String, float[]>();
     public HashMap<String, float[]> defaultRatios = new HashMap<String, float[]>();
     public HashMap<String, Float> levels = new HashMap<String, Float>();
+    public HashMap<String, EssenceBarIcon> icons = new HashMap<String, EssenceBarIcon>();
     private NBTTagCompound data;
 
     public static final EssenceBar bars()
@@ -27,8 +31,9 @@ public class EssenceBar implements IPlayerTracker
         if (ratios.get(player.username) == null)
         {
             ratios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
-            defaultRatios.put(player.username, new float[]{0.4F, 0.0F, 0.2F, 0.2F, 0.2F});
+            defaultRatios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
             levels.put(player.username, 50F);
+            icons.put(player.username, new EssenceBarIcon(player));
         }
     }
     
@@ -38,12 +43,18 @@ public class EssenceBar implements IPlayerTracker
             ratios.put(player.username, essences);
             defaultRatios.put(player.username, defaultEssences);
             levels.put(player.username, level);
+            icons.put(player.username, new EssenceBarIcon(player));
         }
     }
 
     public float getEssenceAmount (EntityPlayer player, int essence)
     {
-        return ratios.get(player)[essence] * levels.get(player);
+        return ratios.get(player.username)[essence] * levels.get(player.username);
+    }
+
+    public float getScaledEssenceAmount (EntityPlayer player, int essence)
+    {
+        return ratios.get(player.username)[essence] * 80;
     }
 
     public void addScaledEssence(EntityPlayer player, int essence, float amount)
@@ -59,7 +70,7 @@ public class EssenceBar implements IPlayerTracker
         essences[essence] -= amount / levels.get(player.username);
         for (int i = 0; i < 5; ++i)
             if (i != essence)
-                addScaledEssence(player, i, amount / 4);
+                addScaledEssence(player, i, amount / (94 * levels.get(player.username)));
         ratios.put(player.username, essences);
     }
 
@@ -74,11 +85,12 @@ public class EssenceBar implements IPlayerTracker
 
     public void updateBar(EntityPlayer player, int delta)
     {
-        if (!ratios.containsKey(player.username) || !defaultRatios.containsKey(player.username) || !levels.containsKey(player.username))
+        if (hasPlayer(player))
         {
             addPlayer(player);
         }
         float[] essences = ratios.get(player.username);
+        
         for (int j = 0; j < delta; j++)
         {
             for (int i = 0; i < 5; i++)
@@ -94,13 +106,36 @@ public class EssenceBar implements IPlayerTracker
         ratios.put(player.username, essences);
     }
     
+    public float[] getScaledEssences(EntityPlayer player)
+    {
+        float[] essences = new float[5];
+        
+        for (int i = 0; i < 5; i++)
+        {
+            essences[i] = getScaledEssenceAmount(player, i);
+        }
+        
+        return essences;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void renderBar(EntityPlayer player)
+    {
+        icons.get(player.username).renderIcon(player);
+    }
+    
+    public boolean hasPlayer(EntityPlayer player)
+    {
+        return ratios.containsKey(player.username) && defaultRatios.containsKey(player.username) && levels.containsKey(player.username);
+    }
+    
     public void saveToPlayerNBT(EntityPlayer player)
     {
         data = player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG);
         
         NBTTagList tagList = new NBTTagList();
         
-        if (!ratios.containsKey(player.username) || !defaultRatios.containsKey(player.username) || !levels.containsKey(player.username))
+        if (hasPlayer(player))
         {
             addPlayer(player);
         }
