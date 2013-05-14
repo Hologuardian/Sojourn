@@ -28,23 +28,18 @@ public class EssenceBar implements IPlayerTracker
     
     public void addPlayer(EntityPlayer player)
     {
-        if (ratios.get(player.username) == null)
-        {
-            ratios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
-            defaultRatios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
-            levels.put(player.username, 50F);
-            icons.put(player.username, new EssenceBarIcon(player));
-        }
+        ratios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
+        defaultRatios.put(player.username, new float[]{0.2F, 0.2F, 0.2F, 0.2F, 0.2F});
+        levels.put(player.username, 50F);
+        icons.put(player.username, new EssenceBarIcon(player));
     }
     
     public void addPlayer(EntityPlayer player, float[] essences, float[] defaultEssences, float level)
     {
-        {
-            ratios.put(player.username, essences);
-            defaultRatios.put(player.username, defaultEssences);
-            levels.put(player.username, level);
-            icons.put(player.username, new EssenceBarIcon(player));
-        }
+        ratios.put(player.username, essences);
+        defaultRatios.put(player.username, defaultEssences);
+        levels.put(player.username, level);
+        icons.put(player.username, new EssenceBarIcon(player));
     }
 
     public float getEssenceAmount (EntityPlayer player, int essence)
@@ -54,7 +49,7 @@ public class EssenceBar implements IPlayerTracker
 
     public float getScaledEssenceAmount (EntityPlayer player, int essence)
     {
-        return ratios.get(player.username)[essence] * 80;
+        return ratios.get(player.username)[essence] * 105;
     }
 
     public void addScaledEssence(EntityPlayer player, int essence, float amount)

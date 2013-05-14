@@ -23,37 +23,41 @@ public class EssenceBarIcon extends Gui
     
     public void renderIcon(EntityPlayer player)
     {
-        if (mc.currentScreen == null || !mc.currentScreen.doesGuiPauseGame() && EssenceBar.bars().hasPlayer(player))
+        GL11.glEnable(GL11.GL_BLEND);
+        
+        if (EssenceBar.bars().hasPlayer(player))
         {
             ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
             int k = scaledresolution.getScaledWidth();
             int l = scaledresolution.getScaledHeight();
-            renderBar(player, k - 5, l - 5, 1F, EssenceBar.bars().getScaledEssences(player));
+            renderBar(player, k - 5, l - 3, 1F, EssenceBar.bars().getScaledEssences(player));
         }
     }
     
     public void renderBar(EntityPlayer player, int posX, int posY, float scale, float[] essences)
     {
-        this.mc.entityRenderer.setupOverlayRendering();
-        this.mc.renderEngine.bindTexture("/res/texture/essenceBar.png");
         GL11.glEnable(GL11.GL_BLEND);
-        
+
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
+        this.mc.renderEngine.bindTexture("/res/texture/essenceBar.png");
+        
         int x = posX;
         int x1;
         int y = posY - 16;
         int y1 = 16;
+        int u = 256;
         for (int i = 4; i >= 0; i--)
         {
             float val = essences[i];
             x1 = (int) (val);
-            this.drawTexturedModalRect(x - x1, y, 0, 16 * (4 - i) + 1, x1, y1);
             x -= x1;
+            u -= x1;
+            this.drawTexturedModalRect(x, y, u, 16 * (4 - i), x1, y1);
         }
+        
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
-        
     }
     
     public int essenceColor(int essence)

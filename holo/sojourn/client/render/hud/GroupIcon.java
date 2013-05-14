@@ -25,22 +25,20 @@ public class GroupIcon extends Gui
     public final Minecraft mc = Minecraft.getMinecraft();
     private int updateCounter;
     private Random rand = new Random();
-    
+
     public GroupIcon(EntityPlayer player)
     {
     }
-    
+
     public void renderIcon(Group group, EntityPlayer player)
     {
-        if (mc.currentScreen == null || !mc.currentScreen.doesGuiPauseGame())
+        int i = 0;
+        
+        for (EntityPlayer p : group.getList())
         {
-            int i = 0;
-            for (EntityPlayer p : group.getList())
-            {
-                drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
-                drawPlayerHealthAndArmor(p, 60, 85 + 50 * i, 4.35F);
-                i++;
-            }
+            drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
+            drawPlayerHealthAndArmor(p, 60, 85 + 50 * i, 4.35F);
+            i++;
         }
         ++this.updateCounter;
     }
@@ -78,14 +76,14 @@ public class GroupIcon extends Gui
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
-    
+
     public void drawPlayerHealthAndArmor(EntityPlayer player, int xOffset, int yOffset, float targetSize)
     {        
-        this.mc.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
 
         GL11.glPushMatrix();
         GL11.glScalef(targetSize / 9F, targetSize / 9F, targetSize / 9F);
+        
         boolean flag1;
         int i1;
         int j1;
@@ -95,7 +93,7 @@ public class GroupIcon extends Gui
         int i3;
         int j3;
         int k3;
-        
+
         this.mc.renderEngine.bindTexture("/gui/icons.png");
         flag1 = player.hurtResistantTime / 3 % 2 == 1;
 
@@ -107,25 +105,23 @@ public class GroupIcon extends Gui
         i1 = player.getHealth();
         j1 = player.prevHealth;
         this.rand.setSeed(this.updateCounter * 312871);
-        
-        this.mc.mcProfiler.endStartSection("healthArmor");
+
         int j4;
         int k4;
         int l4;
         i2 = xOffset;
-        this.mc.mcProfiler.startSection("expBar");
 
         k3 = yOffset;
         k2 = ForgeHooks.getTotalArmorValue(mc.thePlayer);
         i3 = -1;
-        
+
         for (j4 = 0; j4 < 10; ++j4)
         {
             if (player.isPotionActive(Potion.regeneration))
             {
                 i3 = this.updateCounter % 150 / 5;
             }
-            
+
             j3 = 16;
 
             if (player.isPotionActive(Potion.poison))
@@ -182,7 +178,7 @@ public class GroupIcon extends Gui
                     this.drawTexturedModalRect(l4, k3 + 9, 16, 9, 9, 9);
                 }
             }
-            
+
             this.drawTexturedModalRect(l4, k4, 16 + b0 * 9, 9 * b1, 9, 9);
 
             if (flag1)
@@ -208,8 +204,7 @@ public class GroupIcon extends Gui
                 this.drawTexturedModalRect(l4, k4, j3 + 45, 9 * b1, 9, 9);
             }
         }
-
-        this.mc.mcProfiler.endSection();
         GL11.glPopMatrix();
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }
