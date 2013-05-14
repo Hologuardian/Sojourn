@@ -57,7 +57,6 @@ public class EssenceBarIcon extends Gui
         }
         
         GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_BLEND);
     }
     
     public int essenceColor(int essence)
