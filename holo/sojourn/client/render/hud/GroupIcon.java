@@ -30,10 +30,10 @@ public class GroupIcon extends Gui
     {
     }
 
+    @SideOnly(Side.CLIENT)
     public void renderIcon(Group group, EntityPlayer player)
     {
         int i = 0;
-        
         for (EntityPlayer p : group.getList())
         {
             drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
@@ -42,9 +42,11 @@ public class GroupIcon extends Gui
         }
         ++this.updateCounter;
     }
-
-    public void drawPlayerOnGui(EntityPlayer thePlayer, int par1, int par2, int par3, float par4, float par5)
+    
+    @SideOnly(Side.CLIENT)
+    public void drawPlayerOnGui(EntityPlayer player, int par1, int par2, int par3, float par4, float par5)
     {
+        EntityPlayer thePlayer = player;
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
@@ -77,6 +79,7 @@ public class GroupIcon extends Gui
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
+    @SideOnly(Side.CLIENT)
     public void drawPlayerHealthAndArmor(EntityPlayer player, int xOffset, int yOffset, float targetSize)
     {        
         GL11.glEnable(GL11.GL_BLEND);

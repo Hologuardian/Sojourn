@@ -1,15 +1,14 @@
 package holo.sojourn.group;
 
-import java.util.ArrayList;
-
-import cpw.mods.fml.common.IPlayerTracker;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.IPlayerTracker;
 
 public class GroupManager implements IPlayerTracker
 {
     private static final GroupManager manager = new GroupManager();
-    public static ArrayList<Group>groupList = new ArrayList();
+    public static HashMap<String, Group>groupList = new HashMap<String, Group>();
     
     public static final GroupManager groups()
     {
@@ -18,7 +17,7 @@ public class GroupManager implements IPlayerTracker
     
     public void registerGroup(Group group)
     {
-        groupList.add(group);
+        groupList.put(group.getHostName(), group);
     }
     
     public void disbandList(Group group)
@@ -28,7 +27,7 @@ public class GroupManager implements IPlayerTracker
     
     public Group getGroupFromPlayer(EntityPlayer player)
     {
-        for(Group group : groupList)
+        for(Group group : groupList.values())
         {
             if (group != null)
                 if (group.hasPlayer(player))
@@ -61,4 +60,9 @@ public class GroupManager implements IPlayerTracker
 
     @Override
     public void onPlayerRespawn(EntityPlayer player){}
+    
+    public boolean doesGroupExist(String username)
+    {
+        return groupList.containsKey(username);
+    }
 }

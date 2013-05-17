@@ -20,7 +20,6 @@ public class CommonProxy
 //        renderRegistry();
 //        SojournRecipes.initRecipes();
 //        SojournNames.initNames();
-          
     }
     
     public void tickRegistry() {

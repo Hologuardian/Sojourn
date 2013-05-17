@@ -59,6 +59,11 @@ public class Group
         }
     }
     
+    public String getHostName()
+    {
+        return playerList.get(0).username;
+    }
+    
     public void summon(EntityPlayer summoner)
     {
         for (EntityPlayer player : playerList)
