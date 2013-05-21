@@ -17,9 +17,6 @@ public class EssenceBarIcon extends Gui
 
     public final Minecraft mc = Minecraft.getMinecraft();
     
-    public EssenceBarIcon(EntityPlayer player)
-    {
-    }
     
     public void renderIcon(EntityPlayer player)
     {
@@ -31,6 +28,16 @@ public class EssenceBarIcon extends Gui
             int k = scaledresolution.getScaledWidth();
             int l = scaledresolution.getScaledHeight();
             renderBar(player, k - 5, l - 3, 1F, EssenceBar.bars().getScaledEssences(player));
+        }
+    }
+    
+    public void renderIcon(EntityPlayer player, int x, int y, float scale)
+    {
+        GL11.glEnable(GL11.GL_BLEND);
+        
+        if (EssenceBar.bars().hasPlayer(player))
+        {
+            renderBar(player, x, y, scale, EssenceBar.bars().getScaledEssences(player));
         }
     }
     

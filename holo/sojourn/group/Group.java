@@ -5,32 +5,37 @@ import holo.sojourn.client.render.hud.GroupIcon;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class Group
 {
     private ArrayList<EntityPlayer> playerList;
-    private ArrayList<GroupIcon> icons;
     
     public Group(EntityPlayer host)
     {
-        playerList = new ArrayList();
-        icons = new ArrayList();
+        playerList = new ArrayList(7);
         playerList.add(host);
-        icons.add(playerList.indexOf(host), new GroupIcon(host));
     }
     
     public boolean addPlayer(EntityPlayer player)
     {
-        if (playerList.get(19) == null)
+        if (playerList.size() < 7)
         {
             playerList.add(player);
-            icons.add(playerList.indexOf(player), new GroupIcon(player));
             return true;
         }
         else
             return false;
+    }
+    
+    public int getSize()
+    {
+        int ret = 0;
+        for (EntityPlayer player : playerList)
+        {
+            if (player != null)
+                ret++;
+        }
+        return ret;
     }
     
     public ArrayList<EntityPlayer> getList()
@@ -45,7 +50,6 @@ public class Group
     
     public boolean removePlayer(EntityPlayer player)
     {
-        icons.add(playerList.indexOf(player), new GroupIcon(player));
         return playerList.remove(player);
     }
     
@@ -73,14 +77,13 @@ public class Group
         }
     }
     
-    @SideOnly(Side.CLIENT)
     public void renderIcons()
     {
+        GroupIcon icon = new GroupIcon();
         for (EntityPlayer player : playerList)
         {
             if (player != null)
             {
-                GroupIcon icon = icons.get(playerList.indexOf(player));
                 icon.renderIcon(this, player);
             }
         }

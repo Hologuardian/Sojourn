@@ -1,6 +1,7 @@
 package holo.sojourn;
 
 import holo.sojourn.command.group.CommandCreateGroup;
+import holo.sojourn.command.group.CommandJoinGroup;
 import holo.sojourn.proxy.CommonProxy;
 import net.minecraft.command.CommandHandler;
 import res.string.Strings;
@@ -53,5 +54,6 @@ public class Sojourn
     {       
         CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
         commandManager.registerCommand(new CommandCreateGroup());
+        commandManager.registerCommand(new CommandJoinGroup());
     }
 }

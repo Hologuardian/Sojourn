@@ -1,6 +1,6 @@
 package holo.sojourn.handler.tick;
 
-import holo.sojourn.essence.EssenceBar;
+import holo.sojourn.client.render.hud.EssenceBarIcon;
 import holo.sojourn.group.Group;
 import holo.sojourn.group.GroupManager;
 
@@ -8,7 +8,6 @@ import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -39,8 +38,8 @@ public class ClientTickHandler implements ITickHandler
             Group playerGroup = GroupManager.groups().getGroupFromPlayer(player);
             if (playerGroup != null)
                 playerGroup.renderIcons();
-
-            EssenceBar.bars().renderBar(player);
+            
+            new EssenceBarIcon().renderIcon(player);
         }
     }
 

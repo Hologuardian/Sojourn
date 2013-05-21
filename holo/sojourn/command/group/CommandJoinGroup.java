@@ -1,10 +1,12 @@
 package holo.sojourn.command.group;
 
+import java.util.List;
+
 import holo.sojourn.group.GroupManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandJoinGroup extends CommandBase
 {
@@ -25,9 +27,31 @@ public class CommandJoinGroup extends CommandBase
     {
         if (GroupManager.groups().doesGroupExist(args[0]))
         {
-            EntityPlayerMP player = (EntityPlayerMP)p;
-            if (GroupManager.groups().getGroupFromPlayer(player) != null && p instanceof EntityPlayer)
-                GroupManager.groups().getGroupFromPlayer(player).addPlayer((EntityPlayer) p);
+            EntityPlayerMP player =(EntityPlayerMP)(p);
+            EntityPlayerMP host = func_82359_c(p, args[0]);
+            if (GroupManager.groups().getGroupFromPlayer(host) != null)
+                GroupManager.groups().getGroupFromPlayer(host).addPlayer(player);
         }
+    }
+
+    /**
+     * Adds the strings available in this command to the given list of tab completion options.
+     */
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    {
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
+    }
+
+    protected String[] getPlayers()
+    {
+        return MinecraftServer.getServer().getAllUsernames();
+    }
+
+    /**
+     * Return whether the specified command parameter index is a username parameter.
+     */
+    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+    {
+        return par2 == 0;
     }
 }
