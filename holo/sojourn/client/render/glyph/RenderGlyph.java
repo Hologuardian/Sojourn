@@ -22,14 +22,13 @@ public class RenderGlyph extends Gui
         return this.glyph;
     }
     
-    public void drawGlyph(int x, int y, float scale)
+    public void drawGlyph(int x, int y, float scale, int color)
     {
         GlyphMap glyph = this.getGlyph();
-        GL11.glEnable(GL11.GL_BLEND);
 
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glColor3f(((float)(color >> 16 & 255) / 255.0F), (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F);
         mc.renderEngine.bindTexture("/res/texture/glyphs.png");
         for (int i = 0; i < 2; i++)
         {
@@ -38,7 +37,8 @@ public class RenderGlyph extends Gui
                 this.drawTexturedModalRect(x + i * 32, y + j * 32, (glyph.map[i][j] % 8) * 32, (int) Math.floor(glyph.map[i][j] / 8) * 32, 32, 32);
             }
         }
-        
+
+        GL11.glColor3f(1F, 1F, 1F);
         GL11.glPopMatrix();
     }
 }

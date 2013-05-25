@@ -1,6 +1,6 @@
 package holo.sojourn.essence;
 
-import holo.sojourn.network.packet.ServerPacketHandler;
+import holo.sojourn.network.packet.PacketHandler;
 
 import java.util.HashMap;
 
@@ -100,7 +100,7 @@ public class EssenceBar implements IPlayerTracker
             }
         }
         ratios.put(player.username, essences);
-        ServerPacketHandler.sendBarsPacket(player);
+        PacketHandler.sendBarsPacket(player);
     }
 
     public float[] getScaledEssences(EntityPlayer player)

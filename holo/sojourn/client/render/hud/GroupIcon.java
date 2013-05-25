@@ -34,15 +34,16 @@ public class GroupIcon extends Gui
 
 
     @SideOnly(Side.CLIENT)
-    public void renderIcon(Group group, EntityPlayer player)
+    public void renderIcon(Group group)
     {
         int i = 0;
-        for (EntityPlayer p : group.getList())
+        for (String name : group.getList())
         {
+            EntityPlayer p = mc.theWorld.getPlayerEntityByName(name);
             drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
             drawPlayerHealthAndArmor(p, 60, 85 + 50 * i, 4.35F);
             new EssenceBarIcon().renderBar(p, 194, 116, 0.35F, EssenceBar.bars().getScaledEssences(p));
-            new PlayerGlyphIcon(p.username).drawGlyph(160, 50, 0.2F);
+            new PlayerGlyphIcon(p.username).drawGlyph(160, 50, 0.2F, 0x901A9E);
             Iterator iterator = p.getActivePotionEffects().iterator();
             mc.renderEngine.bindTexture("/gui/inventory.png");
             int j = 0;

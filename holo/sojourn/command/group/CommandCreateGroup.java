@@ -33,7 +33,7 @@ public class CommandCreateGroup extends CommandBase
     {
         EntityPlayerMP player = (EntityPlayerMP)p;
         if (GroupManager.groups().getGroupFromPlayer(player) == null)
-            GroupManager.groups().registerGroup(new Group(player));
+            GroupManager.groups().registerGroup(new Group(player.username));
     }
 
     /**

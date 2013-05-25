@@ -3,7 +3,7 @@ package holo.sojourn.proxy;
 import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.GroupManager;
 import holo.sojourn.handler.tick.ServerTickHandler;
-import holo.sojourn.network.packet.ServerPacketHandler;
+import holo.sojourn.network.packet.PacketHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,8 +26,8 @@ public class CommonProxy
     
     public void tickRegistry() {
         TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER); 
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Essence");
-        NetworkRegistry.instance().registerChannel(new ServerPacketHandler(), "Group");
+        NetworkRegistry.instance().registerChannel(new PacketHandler(), "Essence");
+        NetworkRegistry.instance().registerChannel(new PacketHandler(), "Group");
     }
     
     public void renderRegistry() {

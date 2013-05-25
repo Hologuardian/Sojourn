@@ -1,90 +1,109 @@
 package holo.sojourn.group;
 
 import holo.sojourn.client.render.hud.GroupIcon;
+import holo.sojourn.network.packet.PacketHandler;
 
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class Group
 {
-    private ArrayList<EntityPlayer> playerList;
-    
-    public Group(EntityPlayer host)
+    private ArrayList<String> playerList;
+    public final MinecraftServer server = MinecraftServer.getServer();
+
+    public Group(String host)
     {
         playerList = new ArrayList(7);
-        playerList.add(host);
+        addPlayer(host);
     }
-    
-    public boolean addPlayer(EntityPlayer player)
+
+    public boolean addPlayer(String player)
     {
         if (playerList.size() < 7)
-        {
             playerList.add(player);
-            return true;
-        }
-        else
-            return false;
+        update(player);
+        return false;
     }
-    
+
+    public boolean removePlayer(String player)
+    {
+        return playerList.remove(player);
+    }
+
+    public void update(String name)
+    {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            PacketHandler.sendGroupPacket(server.getConfigurationManager().getPlayerForUsername(name));
+        }
+        else if (FMLCommonHandler.instance().getSide() == Side.SERVER)
+        {
+            for (String player : playerList)
+            {
+                PacketHandler.sendGroupPacket(server.getConfigurationManager().getPlayerForUsername(player));
+            }
+        }
+    }
+
     public int getSize()
     {
         int ret = 0;
-        for (EntityPlayer player : playerList)
+        for (String player : playerList)
         {
-            if (player != null)
+            if (!player.equals(""))
                 ret++;
         }
         return ret;
     }
-    
-    public ArrayList<EntityPlayer> getList()
+
+    public ArrayList<String> getList()
     {
         return playerList;
     }
-    
-    public boolean hasPlayer(EntityPlayer player)
+
+    public boolean hasPlayer(String player)
     {
         return playerList.contains(player);
     }
-    
-    public boolean removePlayer(EntityPlayer player)
-    {
-        return playerList.remove(player);
-    }
-    
+
     public void transportToHost()
     {
-        EntityPlayer host = playerList.get(0);
-        for (EntityPlayer player : playerList.subList(1, 19))
+        EntityPlayer host = server.getConfigurationManager().getPlayerForUsername(playerList.get(0));
+        for (String name : playerList.subList(1, 7))
         {
+            EntityPlayer player = server.getConfigurationManager().getPlayerForUsername(name);
             if (player != null)
                 player.setPosition(host.posX, host.posY, host.posZ);
         }
     }
-    
+
     public String getHostName()
     {
-        return playerList.get(0).username;
+        return playerList.get(0);
     }
-    
+
     public void summon(EntityPlayer summoner)
     {
-        for (EntityPlayer player : playerList)
+        for (String name : playerList)
         {
+            EntityPlayer player = server.getConfigurationManager().getPlayerForUsername(name);
             if (player != null && player != summoner)
                 player.setPosition(summoner.posX, summoner.posY, summoner.posZ);
         }
     }
-    
+
     public void renderIcons()
     {
         GroupIcon icon = new GroupIcon();
-        for (EntityPlayer player : playerList)
+        for (String name : playerList)
         {
-            if (player != null)
+            if (!name.equals(""))
             {
-                icon.renderIcon(this, player);
+                icon.renderIcon(this);
             }
         }
     }

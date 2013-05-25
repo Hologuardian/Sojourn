@@ -1,9 +1,7 @@
 package holo.sojourn.proxy;
 
 import holo.sojourn.handler.tick.ClientTickHandler;
-import holo.sojourn.network.packet.ClientPacketHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,8 +13,6 @@ public class ClientProxy extends CommonProxy {
     public void tickRegistry() {
         super.tickRegistry();
         TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
-        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Essence");
-        NetworkRegistry.instance().registerChannel(new ClientPacketHandler(), "Group");
     }
     @Override
     public void renderRegistry() 
