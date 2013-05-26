@@ -1,6 +1,7 @@
 package holo.sojourn.handler.tick;
 
 import holo.sojourn.essence.EssenceBar;
+import holo.sojourn.group.GroupManager;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ public class ServerTickHandler implements ITickHandler
         {
             EntityPlayerMP player = (EntityPlayerMP) players.next();
             EssenceBar.bars().updateBar(player, 2);
+            GroupManager.groups().update(player.username);
         }
     }
 }

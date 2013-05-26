@@ -1,14 +1,11 @@
 package holo.sojourn.group;
 
 import holo.sojourn.client.render.hud.GroupIcon;
-import holo.sojourn.network.packet.PacketHandler;
 
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class Group
 {
@@ -25,28 +22,12 @@ public class Group
     {
         if (playerList.size() < 7)
             playerList.add(player);
-        update(player);
         return false;
     }
 
     public boolean removePlayer(String player)
     {
         return playerList.remove(player);
-    }
-
-    public void update(String name)
-    {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-        {
-            PacketHandler.sendGroupPacket(server.getConfigurationManager().getPlayerForUsername(name));
-        }
-        else if (FMLCommonHandler.instance().getSide() == Side.SERVER)
-        {
-            for (String player : playerList)
-            {
-                PacketHandler.sendGroupPacket(server.getConfigurationManager().getPlayerForUsername(player));
-            }
-        }
     }
 
     public int getSize()

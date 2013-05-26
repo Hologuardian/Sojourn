@@ -35,11 +35,12 @@ public class ClientTickHandler implements ITickHandler
         EntityPlayer player = mc.thePlayer;
         if (player != null)
         {
-            Group playerGroup = GroupManager.groups().getGroupFromPlayer(player);
+            Group playerGroup = GroupManager.groups().getGroupFromPlayer(player.username);
             if (playerGroup != null)
                 playerGroup.renderIcons();
             
             new EssenceBarIcon().renderIcon(player);
+            GroupManager.groups().update(player.username);
         }
     }
 

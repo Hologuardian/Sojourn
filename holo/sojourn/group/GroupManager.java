@@ -1,11 +1,17 @@
 package holo.sojourn.group;
 
+import holo.sojourn.network.packet.PacketHandler;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.relauncher.Side;
 
 public class GroupManager implements IPlayerTracker
 {
@@ -42,12 +48,24 @@ public class GroupManager implements IPlayerTracker
         groupList.remove(group.getHostName());
     }
     
-    public Group getGroupFromPlayer(EntityPlayer player)
+    public Group getGroupFromPlayer(String player)
     {
-        if (groupList.containsKey(player.username))
-            return groupList.get(player.username);
+        if (groupList.containsKey(player))
+            return groupList.get(player);
         
         return null;
+    }
+
+    public void update(String name)
+    {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            PacketHandler.sendGroupPacket(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name));
+        }
+        else if (FMLCommonHandler.instance().getSide() == Side.SERVER)
+        {
+            PacketHandler.sendGroupPacket(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
+        }
     }
 
     @Override
@@ -58,7 +76,7 @@ public class GroupManager implements IPlayerTracker
     @Override
     public void onPlayerLogout(EntityPlayer player)
     {
-        Group group = this.getGroupFromPlayer(player);
+        Group group = this.getGroupFromPlayer(player.username);
         if (group != null)
             group.removePlayer(player.username);
     }
@@ -66,7 +84,7 @@ public class GroupManager implements IPlayerTracker
     @Override
     public void onPlayerChangedDimension(EntityPlayer player)
     {
-        Group group = this.getGroupFromPlayer(player);
+        Group group = this.getGroupFromPlayer(player.username);
         if (group != null)
             group.summon(player);
     }

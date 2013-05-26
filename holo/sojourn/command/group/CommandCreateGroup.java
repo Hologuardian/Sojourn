@@ -32,7 +32,7 @@ public class CommandCreateGroup extends CommandBase
     public void processCommand(ICommandSender p, String[] args)
     {
         EntityPlayerMP player = (EntityPlayerMP)p;
-        if (GroupManager.groups().getGroupFromPlayer(player) == null)
+        if (GroupManager.groups().getGroupFromPlayer(player.username) == null)
             GroupManager.groups().registerGroup(new Group(player.username));
     }
 

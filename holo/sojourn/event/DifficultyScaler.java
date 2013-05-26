@@ -22,9 +22,9 @@ public class DifficultyScaler
         
         for (EntityPlayerMP player : playerList)
             if (player != null)
-                if (GroupManager.groups().getGroupFromPlayer(player) != null)
-                    if (GroupManager.groups().getGroupFromPlayer(player).getSize() >= difficulty && ent.getDistanceToEntity(player) <= 128)
-                        difficulty = GroupManager.groups().getGroupFromPlayer(player).getSize();
+                if (GroupManager.groups().getGroupFromPlayer(player.username) != null)
+                    if (GroupManager.groups().getGroupFromPlayer(player.username).getSize() >= difficulty && ent.getDistanceToEntity(player) <= 128)
+                        difficulty = GroupManager.groups().getGroupFromPlayer(player.username).getSize();
         
         
     }

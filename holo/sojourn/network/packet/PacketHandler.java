@@ -93,7 +93,7 @@ public class PacketHandler implements IPacketHandler
 
     public static void sendGroupPacket(EntityPlayer player)
     {
-        Group group = GroupManager.groups().getGroupFromPlayer(player);
+        Group group = GroupManager.groups().getGroupFromPlayer(player.username);
         if (group == null)
             return;
         
