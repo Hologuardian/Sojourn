@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
-import cpw.mods.fml.relauncher.Side;
 
 public class GroupManager implements IPlayerTracker
 {
@@ -58,13 +57,15 @@ public class GroupManager implements IPlayerTracker
 
     public void update(String name)
     {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        if (FMLCommonHandler.instance().getSide().isClient())
         {
-            PacketHandler.sendGroupPacket(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name));
+            if (Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name) != null)
+                PacketHandler.sendGroupPacket(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name));
         }
-        else if (FMLCommonHandler.instance().getSide() == Side.SERVER)
+        else if (FMLCommonHandler.instance().getSide().isServer())
         {
-            PacketHandler.sendGroupPacket(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
+            if (MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name) != null)
+                PacketHandler.sendGroupPacket(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
         }
     }
 

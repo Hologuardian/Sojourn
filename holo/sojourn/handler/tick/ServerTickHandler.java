@@ -19,7 +19,10 @@ public class ServerTickHandler implements ITickHandler
     @Override
     public void tickEnd(EnumSet var1, Object ... var2)
     {
-        onTickInGame();
+        if (var1.equals(ticks()))
+        {
+            onTickInGame();
+        }
     }
 
     @Override

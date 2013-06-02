@@ -18,7 +18,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.relauncher.Side;
 
 public class PacketHandler implements IPacketHandler
 {
@@ -97,7 +96,7 @@ public class PacketHandler implements IPacketHandler
         if (group == null)
             return;
         
-        ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         try 
         {
@@ -113,11 +112,11 @@ public class PacketHandler implements IPacketHandler
             packet.data = bos.toByteArray();
             packet.length = bos.size();
             
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+            if (FMLCommonHandler.instance().getSide().isClient())
             {
                 PacketDispatcher.sendPacketToServer(packet);
             }
-            else if (FMLCommonHandler.instance().getSide() == Side.SERVER)
+            else if (FMLCommonHandler.instance().getSide().isServer())
             {
                 PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
             }
