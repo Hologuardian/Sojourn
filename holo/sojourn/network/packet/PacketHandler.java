@@ -10,11 +10,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -28,7 +32,8 @@ public class PacketHandler implements IPacketHandler
         {
             handleEssence(packet);
         }
-        else if (packet.channel.equals("Group"));
+        
+        if (packet.channel.equals("SojournGroup"));
         {
             handleGroup(packet);
         }
@@ -66,22 +71,41 @@ public class PacketHandler implements IPacketHandler
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(packet.data));
         Group group = null;
         ArrayList<String> names = new ArrayList<String>();
+        HashMap<String, ArrayList<Integer>> potionMap = new HashMap<String, ArrayList<Integer>>();
+        
+        if (packet.channel.equals("Essence"))
+            return;
         
         try 
         {
-            int i = dis.read();
-            if (i > 20 || i == 0)
+            int i = dis.readInt();
+            if (i == 0)
                 return;
-            
-            System.out.println("NUMBER OF PLAYERNAMES IN PACKET " + i);
-            
+
             for (int j = i; j > 0; j--)
             {
-                names.add(dis.readUTF());
+                String name = dis.readUTF();
+                names.add(name);
+                potionMap.put(name, new ArrayList<Integer>());
+                int n = dis.readInt();
+                for (int m = n; m > 0; m--)
+                {
+                    Integer potionID = dis.readInt();
+                    
+                    ArrayList<Integer> temp = potionMap.get(name);
+                    temp.add(potionID);
+                    potionMap.put(name, temp);
+                }
+//                System.out.println();
             }
-            System.out.println(names.toString());
+
+//            System.out.println(Minecraft.getMinecraft().thePlayer.username + "RECIEVING " + i + " " + names.toString());
             group = GroupManager.groups().createGroupFromList(names);
-            GroupManager.groups().registerGroup(group);
+            if (group != null)
+            {
+                group.potionMap.putAll(potionMap);
+                GroupManager.groups().registerGroup(group);
+            }
         } 
         catch (IOException e) 
         {
@@ -90,44 +114,46 @@ public class PacketHandler implements IPacketHandler
         }
     }
 
-    public static void sendGroupPacket(EntityPlayer player)
+    public static void sendGroupPacket(String playername, ArrayList<String> names)
     {
-        Group group = GroupManager.groups().getGroupFromPlayer(player.username);
-        if (group == null)
-            return;
+        ServerConfigurationManager serv = MinecraftServer.getServer().getConfigurationManager();
+        EntityPlayer player = serv.getPlayerForUsername(playername);
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         try 
         {
-            dos.writeInt(group.getList().size());
+            dos.writeInt(names.size());
             
-            for (String name : group.getList())
+            for (String name : names)
             {
                 dos.writeUTF(name);
+                dos.writeInt(serv.getPlayerForUsername(name).getActivePotionEffects().size());
+                Iterator iterator = serv.getPlayerForUsername(name).getActivePotionEffects().iterator();
+                while (iterator.hasNext())
+                {
+                    PotionEffect effect = (PotionEffect) iterator.next();
+                    int dat = effect.getPotionID();
+                    dos.writeInt(dat);
+//                    System.out.print("WRITING " + dat + " ");
+                }
+//                System.out.println();
             }
-            System.out.println(group.getList().toString());
-            Packet250CustomPayload packet = new Packet250CustomPayload();
-            packet.channel = "Group";
-            packet.data = bos.toByteArray();
-            packet.length = bos.size();
+//            System.out.println("SENDING " + names.size() + " " + names.toString());
             
-            if (FMLCommonHandler.instance().getSide().isClient())
-            {
-                PacketDispatcher.sendPacketToServer(packet);
-            }
-            else if (FMLCommonHandler.instance().getSide().isServer())
-            {
-                PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
-            }
-            
-            dos.close();
-            bos.close();
         } 
         catch (IOException ex) 
         {
             ex.printStackTrace();
         }
+        
+        Packet250CustomPayload packet = new Packet250CustomPayload();
+        packet.channel = "SojournGroup";
+        packet.data = bos.toByteArray();
+        packet.length = bos.size();
+        
+//        System.out.println("Sending " + names + " to: " + playername);
+        PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
     }
 
     public static void sendBarsPacket(EntityPlayer player)

@@ -1,7 +1,9 @@
 package holo.sojourn.proxy;
 
+import net.minecraftforge.common.MinecraftForge;
 import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.GroupManager;
+import holo.sojourn.handler.MobEventHandler;
 import holo.sojourn.handler.tick.ServerTickHandler;
 import holo.sojourn.network.packet.PacketHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -27,7 +29,7 @@ public class CommonProxy
     public void tickRegistry() {
         TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER); 
         NetworkRegistry.instance().registerChannel(new PacketHandler(), "Essence");
-        NetworkRegistry.instance().registerChannel(new PacketHandler(), "Group");
+        NetworkRegistry.instance().registerChannel(new PacketHandler(), "SojournGroup");
     }
     
     public void renderRegistry() {
@@ -37,6 +39,7 @@ public class CommonProxy
     {
         GameRegistry.registerPlayerTracker(GroupManager.groups());
         GameRegistry.registerPlayerTracker(EssenceBar.bars());
+        MinecraftForge.EVENT_BUS.register(new MobEventHandler());
     }
     
     public void entityRegistry() 

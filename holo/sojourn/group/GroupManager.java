@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
 
 public class GroupManager implements IPlayerTracker
@@ -49,23 +46,26 @@ public class GroupManager implements IPlayerTracker
     
     public Group getGroupFromPlayer(String player)
     {
-        if (groupList.containsKey(player))
-            return groupList.get(player);
+        for(Group group : groupList.values())
+        {
+            if (group.hasPlayer(player))
+            {
+                return group;
+            }
+        }
         
         return null;
     }
 
-    public void update(String name)
+    public void update()
     {
-        if (FMLCommonHandler.instance().getSide().isClient())
+        for (Group group : this.groupList.values())
         {
-            if (Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name) != null)
-                PacketHandler.sendGroupPacket(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(name));
-        }
-        else if (FMLCommonHandler.instance().getSide().isServer())
-        {
-            if (MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name) != null)
-                PacketHandler.sendGroupPacket(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
+            for(String name : group.getList())
+            {
+//                System.out.println("UPDATING");
+                PacketHandler.sendGroupPacket(name, group.getList());
+            }
         }
     }
 

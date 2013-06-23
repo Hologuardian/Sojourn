@@ -37,8 +37,10 @@ public class ClientTickHandler implements ITickHandler
         {
             Group playerGroup = GroupManager.groups().getGroupFromPlayer(player.username);
             if (playerGroup != null)
+            {
+//                System.out.println(player.username);
                 playerGroup.renderIcons();
-            
+            }
             new EssenceBarIcon().renderIcon(player);
         }
     }
@@ -57,7 +59,5 @@ public class ClientTickHandler implements ITickHandler
 
     public void onTickInGame()
     {
-        EntityPlayer player = mc.thePlayer;
-        GroupManager.groups().update(player.username);
     }
 }

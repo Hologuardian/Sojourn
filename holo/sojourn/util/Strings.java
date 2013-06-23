@@ -1,4 +1,4 @@
-package res.string;
+package holo.sojourn.util;
 
 public class Strings 
 {

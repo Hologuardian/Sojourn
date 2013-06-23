@@ -3,6 +3,7 @@ package holo.sojourn.group;
 import holo.sojourn.client.render.hud.GroupIcon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -10,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 public class Group
 {
     private ArrayList<String> playerList;
+    public HashMap<String, ArrayList<Integer>> potionMap = new HashMap<String, ArrayList<Integer>>();
     public final MinecraftServer server = MinecraftServer.getServer();
 
     public Group(String host)

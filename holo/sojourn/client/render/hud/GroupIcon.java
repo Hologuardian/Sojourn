@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -39,19 +38,35 @@ public class GroupIcon extends Gui
         int i = 0;
         for (String name : group.getList())
         {
-            EntityPlayer p = mc.theWorld.getPlayerEntityByName(name);
-            drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
-            drawPlayerHealthAndArmor(p, 60, 85 + 50 * i, 4.35F);
-            new EssenceBarIcon().renderBar(p, 194, 116, 0.35F, EssenceBar.bars().getScaledEssences(p));
-            new PlayerGlyphIcon(p.username).drawGlyph(160, 50, 0.2F, 0x901A9E);
-            Iterator iterator = p.getActivePotionEffects().iterator();
-            mc.renderEngine.bindTexture("/gui/inventory.png");
-            int j = 0;
-            while (iterator.hasNext())
+            EntityPlayer p = null;
+            if (mc.isIntegratedServerRunning())
             {
-                PotionEffect effect = (PotionEffect) iterator.next();
-                drawStatusIcon(60 + j * 18, 50, 0.5F, 0 + Potion.potionTypes[effect.getPotionID()].getStatusIconIndex() % 8 * 18, 198 + Potion.potionTypes[effect.getPotionID()].getStatusIconIndex() / 8 * 18);
+                p = mc.getIntegratedServer().getConfigurationManager().getPlayerForUsername(name);
+            }
+            else
+            {
+                p = mc.theWorld.getPlayerEntityByName(name);
+            }
+            drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
+            drawPlayerHealthAndArmor(p, 60, 85 + 103 * i, 4.35F);
+            new EssenceBarIcon().renderBar(p, 194, 116 + 142 * i, 0.35F, EssenceBar.bars().getScaledEssences(p));
+            new PlayerGlyphIcon(p.username).drawGlyph(160, 50 + 248 * i, 0.2F, 0x901A9E);
+            Iterator iterator = null;
+            if (group.potionMap.containsKey(p.username))
+            {
+                iterator  = group.potionMap.get(p.username).iterator();
+            }
+
+            mc.renderEngine.bindTexture("/gui/inventory.png");
+            int j = 0;      
+
+//            System.out.println(p.username + " " + i + " " + j + " " + p.getActivePotionEffects().toString());
+            while (iterator != null && iterator.hasNext())
+            {
+                int id = (int) iterator.next();
+                drawStatusIcon(60 + j * 18, 50 + 100 * i, 0.5F, 0 + Potion.potionTypes[id].getStatusIconIndex() % 8 * 18, 198 + Potion.potionTypes[id].getStatusIconIndex() / 8 * 18);
                 j++;
+//                System.out.println(p.username + " " + i + " " + j);
             }
             i++;
         }
@@ -149,7 +164,7 @@ public class GroupIcon extends Gui
         i2 = xOffset;
 
         k3 = yOffset;
-        k2 = ForgeHooks.getTotalArmorValue(mc.thePlayer);
+        k2 = ForgeHooks.getTotalArmorValue(player);
         i3 = -1;
 
         for (j4 = 0; j4 < 10; ++j4)

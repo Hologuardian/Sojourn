@@ -44,7 +44,7 @@ public class ServerTickHandler implements ITickHandler
         {
             EntityPlayerMP player = (EntityPlayerMP) players.next();
             EssenceBar.bars().updateBar(player, 2);
-            GroupManager.groups().update(player.username);
         }
+        GroupManager.groups().update();
     }
 }
