@@ -1,12 +1,21 @@
 package holo.sojourn.proxy;
 
-import net.minecraftforge.common.MinecraftForge;
+import holo.sojourn.config.DimensionConfig;
+import holo.sojourn.config.aracoria.AracoriaItemConfig;
 import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.GroupManager;
 import holo.sojourn.handler.MobEventHandler;
 import holo.sojourn.handler.tick.ServerTickHandler;
+import holo.sojourn.helper.SojournDimensionRegistry;
+import holo.sojourn.helper.SojournItems;
 import holo.sojourn.network.packet.PacketHandler;
+
+import java.io.File;
+
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -19,11 +28,12 @@ public class CommonProxy
 //        entityRegistry();
           tickRegistry();
           eventRegistry();
-//        SojournItems.initItems();
+          SojournItems.initItems();
 //        SojournBlocks.initBlocks();
 //        renderRegistry();
 //        SojournRecipes.initRecipes();
 //        SojournNames.initNames();
+          SojournDimensionRegistry.initWorlds();
     }
     
     public void tickRegistry() {
@@ -32,7 +42,19 @@ public class CommonProxy
         NetworkRegistry.instance().registerChannel(new PacketHandler(), "SojournGroup");
     }
     
-    public void renderRegistry() {
+    public void configRegistry(FMLPreInitializationEvent event) 
+    {
+        File file = new File(event.getModConfigurationDirectory(), "Sojourn.cfg");
+        Configuration config = new Configuration(file);
+        config.load();
+        DimensionConfig.initDimensionsConfig(event, config);
+        AracoriaItemConfig.initConfig(event, config);
+        config.save();
+    }
+    
+    public void renderRegistry() 
+    {
+        
     }
     
     public void eventRegistry() 

@@ -34,7 +34,7 @@ public class Sojourn
     public void preInit(FMLPreInitializationEvent event)
     {
         instance = this;
-        //proxy.configRegistry(event);
+        proxy.configRegistry(event);
     }
     
     @Init

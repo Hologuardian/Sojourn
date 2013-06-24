@@ -10,7 +10,10 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
+import holo.sojourn.world.base.HighCaveGen;
+import holo.sojourn.world.base.HighRavineGen;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -26,8 +29,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.MapGenCaves;
-import net.minecraft.world.gen.MapGenRavine;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.MapGenScatteredFeature;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
@@ -74,7 +75,7 @@ public class AracoriaChunkProvider implements IChunkProvider
     /** Holds the overall noise array used in chunk generation */
     private double[] noiseArray;
     private double[] stoneNoise = new double[256];
-    private MapGenBase caveGenerator = new MapGenCaves();
+    private MapGenBase caveGenerator = new HighCaveGen();
 
     /** Holds Stronghold Generator */
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
@@ -87,7 +88,7 @@ public class AracoriaChunkProvider implements IChunkProvider
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 
     /** Holds ravine generator */
-    private MapGenBase ravineGenerator = new MapGenRavine();
+    private MapGenBase ravineGenerator = new HighRavineGen();
 
     /** The biomes that are used to generate the chunk */
     private BiomeGenBase[] biomesForGeneration;
@@ -153,10 +154,10 @@ public class AracoriaChunkProvider implements IChunkProvider
     public void generateTerrain(int par1, int par2, byte[] par3ArrayOfByte)
     {
         byte b0 = 4;
-        byte b1 = 16;
-        byte b2 = 63;
+        byte b1 = 32;
+        int b2 = 180;
         int k = b0 + 1;
-        byte b3 = 17;
+        byte b3 = 33;
         int l = b0 + 1;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, k + 5, l + 5);
         this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * b0, 0, par2 * b0, k, b3, l);
@@ -187,8 +188,8 @@ public class AracoriaChunkProvider implements IChunkProvider
 
                         for (int i2 = 0; i2 < 4; ++i2)
                         {
-                            int j2 = i2 + i1 * 4 << 11 | 0 + j1 * 4 << 7 | k1 * 8 + l1;
-                            short short1 = 128;
+                            int j2 = i2 + i1 * 4 << 12 | 0 + j1 * 4 << 8 | k1 * 8 + l1;
+                            short short1 = 256;
                             j2 -= short1;
                             double d14 = 0.25D;
                             double d15 = (d11 - d10) * d14;
@@ -198,7 +199,7 @@ public class AracoriaChunkProvider implements IChunkProvider
                             {
                                 if ((d16 += d15) > 0.0D)
                                 {
-                                    par3ArrayOfByte[j2 += short1] = (byte)Block.stone.blockID;
+                                    par3ArrayOfByte[j2 += short1] = (byte)Block.stone.blockID; //stone
                                 }
                                 else if (k1 * 8 + l1 < b2)
                                 {
@@ -233,7 +234,7 @@ public class AracoriaChunkProvider implements IChunkProvider
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
 
-        byte b0 = 63;
+        int b0 = 63;
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d0 * 2.0D, d0 * 2.0D, d0 * 2.0D);
 
@@ -248,9 +249,9 @@ public class AracoriaChunkProvider implements IChunkProvider
                 byte b1 = biomegenbase.topBlock;
                 byte b2 = biomegenbase.fillerBlock;
 
-                for (int k1 = 127; k1 >= 0; --k1)
+                for (int k1 = 255; k1 >= 0; --k1)
                 {
-                    int l1 = (l * 16 + k) * 128 + k1;
+                    int l1 = (l * 16 + k) * 256 + k1;
 
                     if (k1 <= 0 + this.rand.nextInt(5))
                     {
@@ -335,7 +336,7 @@ public class AracoriaChunkProvider implements IChunkProvider
     public Chunk provideChunk(int par1, int par2)
     {
         this.rand.setSeed((long)par1 * 341873128712L + (long)par2 * 132897987541L);
-        byte[] abyte = new byte[32768];
+        byte[] abyte = new byte[65536];
         this.generateTerrain(par1, par2, abyte);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, abyte, this.biomesForGeneration);
@@ -350,7 +351,28 @@ public class AracoriaChunkProvider implements IChunkProvider
             this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, abyte);
         }
 
-        Chunk chunk = new Chunk(this.worldObj, abyte, par1, par2);
+        short[] ashort = new short[65536];
+        
+        for (int x = 0; x < 16; x++)
+        {
+            for (int z = 0; z < 16; z++)
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    if ((x << 12| z << 8 | y) >= 65536)
+                    {
+                        System.out.println("x: " + x + " y: " + y + " z: " + z);
+                    }
+                    short a = abyte[x << 12| z << 8 | y];
+                    ashort[y << 8 | z << 4 | x] = a;
+                }
+            }
+        }
+        
+        
+        byte[] bbyte = new byte[65536];
+        Arrays.fill(bbyte, (byte)0);
+        Chunk chunk = new Chunk(this.worldObj, ashort, bbyte, par1, par2);
         byte[] abyte1 = chunk.getBiomeArray();
 
         for (int k = 0; k < abyte1.length; ++k)
@@ -398,6 +420,8 @@ public class AracoriaChunkProvider implements IChunkProvider
         this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5, par6, par7, d0 / 80.0D, d1 / 160.0D, d0 / 80.0D);
         this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5, par6, par7, d0, d1, d0);
         this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5, par6, par7, d0, d1, d0);
+        boolean flag = false;
+        boolean flag1 = false;
         int i2 = 0;
         int j2 = 0;
 
@@ -568,7 +592,7 @@ public class AracoriaChunkProvider implements IChunkProvider
             l1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
             i2 = l + this.rand.nextInt(16) + 8;
 
-            if (l1 < 63 || this.rand.nextInt(10) == 0)
+            if (l1 < 63 || this.rand.nextInt(1000) == 0)
             {
                 (new WorldGenLakes(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, k1, l1, i2);
             }
