@@ -43,7 +43,7 @@ public class AracoriaDimensionTraveler extends ItemSojourn
                         minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, 0, new AracoriaTeleporter(worldserver));
                         
                     } else {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, DimensionConfig.aracoriaDimensionID, new AracoriaTeleporter(worldserver1));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, DimensionConfig.aquatanDimensionID, new AracoriaTeleporter(worldserver1));
                         //par5Entity.travelToDimension(Atum.dimensionID);
                     }
                 }

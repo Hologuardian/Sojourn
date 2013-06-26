@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -95,7 +96,7 @@ public class GroupIcon extends Gui
         thePlayer.motionY =  player.motionY;
         thePlayer.motionZ = player.motionZ;
         thePlayer.skinUrl = "http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(player.username) + ".png";
-
+        
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
@@ -115,6 +116,7 @@ public class GroupIcon extends Gui
         thePlayer.rotationYawHead = -20;
         GL11.glTranslatef(0.0F, thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
+        RenderManager.instance.playerViewX = 0F;
         RenderManager.instance.renderEntityWithPosYaw(thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         thePlayer.renderYawOffset = f2;
         thePlayer.rotationYaw = f3;

@@ -196,15 +196,15 @@ public class HighRavineGen extends MapGenBase
         if (this.rand.nextInt(50) == 0)
         {
             double d0 = (double)(par2 * 16 + this.rand.nextInt(16));
-            double d1 = (double)(this.rand.nextInt(this.rand.nextInt(40) + 8) + 20);
+            double d1 = (double)(this.rand.nextInt(this.rand.nextInt(120) + 8) + 20);
             double d2 = (double)(par3 * 16 + this.rand.nextInt(16));
             byte b0 = 1;
 
             for (int i1 = 0; i1 < b0; ++i1)
             {
-                float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
-                float f2 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
+                float f = this.rand.nextFloat() * (float)Math.PI * 8.0F;
+                float f1 = (this.rand.nextFloat() - 0.5F) * 4.0F / 8.0F;
+                float f2 = (this.rand.nextFloat() * 8.0F + this.rand.nextFloat()) * 2.0F;
                 this.generateRavine(this.rand.nextLong(), par4, par5, par6ArrayOfByte, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
             }
         }
@@ -254,11 +254,11 @@ public class HighRavineGen extends MapGenBase
         int filler = (isExceptionBiome(biome) ? Block.dirt.blockID  : biome.fillerBlock);
         int block  = data[index];
 
-        if (block == Block.stone.blockID || block == filler || block == top)
+        if (block == Block.cobblestone.blockID || block == filler || block == top)
         {
-            if (y < 10)
+            if (y < 32)
             {
-                data[index] = (byte)Block.lavaMoving.blockID;
+                data[index] = (byte)Block.waterMoving.blockID;
             }
             else
             {

@@ -1,4 +1,4 @@
-package holo.sojourn.world.base;
+package holo.sojourn.world.aracoria.features;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.MapGenBase;
 
-public class HighCaveGen extends MapGenBase
+public class AracoriaCaveGen extends MapGenBase
 {
     /**
      * Generates a larger initial cave node than usual. Called 25% of the time.
@@ -114,9 +114,9 @@ public class HighCaveGen extends MapGenBase
                         j2 = 1;
                     }
 
-                    if (k2 > 180)
+                    if (k2 > 240)
                     {
-                        k2 = 180;
+                        k2 = 240;
                     }
 
                     if (l2 < 0)
@@ -215,10 +215,10 @@ public class HighCaveGen extends MapGenBase
 
         for (int j1 = 0; j1 < i1; ++j1)
         {
-            double d0 = (double)(par2 * 16 + this.rand.nextInt(128));
-            double d1 = (double)this.rand.nextInt(this.rand.nextInt(130) + 8);
-            double d2 = (double)(par3 * 16 + this.rand.nextInt(128));
-            int k1 = 1;
+            double d0 = (double)(par2 * 16 + this.rand.nextInt(16));
+            double d1 = (double)this.rand.nextInt(this.rand.nextInt(240) + 8);
+            double d2 = (double)(par3 * 16 + this.rand.nextInt(16));
+            int k1 = 2;
 
             if (this.rand.nextInt(4) == 0)
             {
@@ -228,13 +228,13 @@ public class HighCaveGen extends MapGenBase
 
             for (int l1 = 0; l1 < k1; ++l1)
             {
-                float f = this.rand.nextFloat() * (float)Math.PI * 6.0F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 16.0F / 8.0F;
+                float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                float f1 = (this.rand.nextFloat() - 0.5F) * 0.25F;
                 float f2 = this.rand.nextFloat() * 16.0F + this.rand.nextFloat();
 
                 if (this.rand.nextInt(10) == 0)
                 {
-                    f2 *= this.rand.nextFloat() * this.rand.nextFloat() * 1.0F + 1.0F;
+                    f2 *= this.rand.nextFloat() * this.rand.nextFloat() * 0.5F + 1.0F;
                 }
 
                 this.generateCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, d0, d1, d2, f2, f, f1, 0, 0, 1.0D);
@@ -244,7 +244,7 @@ public class HighCaveGen extends MapGenBase
 
     protected boolean isOceanBlock(byte[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
     {
-        return data[index] == Block.waterMoving.blockID || data[index] == Block.waterStill.blockID;
+        return false;
     }
 
     //Exception biomes to make sure we generate like vanilla
@@ -288,7 +288,7 @@ public class HighCaveGen extends MapGenBase
 
         if (block == Block.cobblestone.blockID || block == filler || block == top)
         {
-            if (y < 32)
+            if (y < 46)
             {
                 data[index] = (byte)Block.waterMoving.blockID;
             }

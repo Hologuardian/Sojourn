@@ -1,4 +1,4 @@
-package holo.sojourn.world.aracoria;
+package holo.sojourn.world.aquatan;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,7 +10,7 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.biome.WorldChunkManagerHell;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class AracoriaWorldProvider extends WorldProvider
+public class AquatanWorldProvider extends WorldProvider
 {
     /**
      * creates a new world chunk manager for WorldProvider
@@ -28,7 +28,7 @@ public class AracoriaWorldProvider extends WorldProvider
 //        type.addNewBiome(SojournDimensionRegistry.aracoriaBiome2);
 //        this.worldChunkMgr = new WorldChunkManager(this.worldObj.getSeed(), type);
 //        
-        this.worldChunkMgr = new WorldChunkManagerHell(SojournDimensionRegistry.aracoriaBiome1, 1.0F, 1.0F);
+        this.worldChunkMgr = new WorldChunkManagerHell(SojournDimensionRegistry.aquatanBiome, 1.0F, 1.0F);
     }
     
     @SideOnly(Side.CLIENT)
@@ -48,7 +48,7 @@ public class AracoriaWorldProvider extends WorldProvider
      */
     public IChunkProvider createChunkGenerator()
     {
-        return new AracoriaChunkProvider(this.worldObj, this.worldObj.getSeed(), false);
+        return new AquatanChunkProvider(this.worldObj, this.worldObj.getSeed(), false);
     }
 
     /**

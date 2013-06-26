@@ -1,4 +1,4 @@
-package holo.sojourn.world.aracoria;
+package holo.sojourn.world.aquatan;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
@@ -10,6 +10,7 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
+import holo.sojourn.helper.aquatan.AquatanBlocks;
 import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
 import holo.sojourn.world.base.HighCaveGen;
 import holo.sojourn.world.base.HighRavineGen;
@@ -43,7 +44,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class AracoriaChunkProvider implements IChunkProvider
+public class AquatanChunkProvider implements IChunkProvider
 {
     /** RNG. */
     private Random rand;
@@ -124,7 +125,7 @@ public class AracoriaChunkProvider implements IChunkProvider
         ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
     }
 
-    public AracoriaChunkProvider(World par1World, long par2, boolean par4)
+    public AquatanChunkProvider(World par1World, long par2, boolean par4)
     {
         this.worldObj = par1World;
         this.mapFeaturesEnabled = par4;
@@ -156,7 +157,7 @@ public class AracoriaChunkProvider implements IChunkProvider
     {
         byte b0 = 4;
         byte b1 = 32;
-        int b2 = 118;
+        int b2 = 200;
         int k = b0 + 1;
         byte b3 = 33;
         int l = b0 + 1;
@@ -204,7 +205,7 @@ public class AracoriaChunkProvider implements IChunkProvider
                                 }
                                 else if (k1 * 8 + l1 < b2)
                                 {
-                                    par3ArrayOfByte[j2 += short1] = (byte)Block.waterStill.blockID;
+                                    par3ArrayOfByte[j2 += short1] = (byte)AquatanBlocks.aquatanWater.blockID;
                                 }
                                 else
                                 {
@@ -235,7 +236,7 @@ public class AracoriaChunkProvider implements IChunkProvider
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
 
-        int b0 = 118;
+        int b0 = 200;
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d0 * 2.0D, d0 * 2.0D, d0 * 2.0D);
 
@@ -289,7 +290,7 @@ public class AracoriaChunkProvider implements IChunkProvider
                                     }
                                     else
                                     {
-                                        b1 = (byte)Block.waterStill.blockID;
+                                        b1 = (byte)AquatanBlocks.aquatanWater.blockID;
                                     }
                                 }
 
@@ -341,16 +342,16 @@ public class AracoriaChunkProvider implements IChunkProvider
         this.generateTerrain(par1, par2, abyte);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, abyte, this.biomesForGeneration);
-        this.caveGenerator.generate(this, this.worldObj, par1, par2, abyte);
-        this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
-
-        if (this.mapFeaturesEnabled)
-        {
-            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.villageGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, abyte);
-        }
+//        this.caveGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//        this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//
+//        if (this.mapFeaturesEnabled)
+//        {
+//            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.villageGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//        }
 
         short[] ashort = new short[65536];
         
@@ -365,6 +366,8 @@ public class AracoriaChunkProvider implements IChunkProvider
                         System.out.println("x: " + x + " y: " + y + " z: " + z);
                     }
                     short a = abyte[x << 12| z << 8 | y];
+                    if (a < 0)
+                        a += 256;
                     ashort[y << 8 | z << 4 | x] = a;
                 }
             }

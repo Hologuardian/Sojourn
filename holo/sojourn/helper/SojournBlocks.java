@@ -1,12 +1,13 @@
 package holo.sojourn.helper;
 
+import holo.sojourn.helper.aquatan.AquatanBlocks;
+
 public class SojournBlocks
 {
 
     public static void initBlocks()
     {
-        // TODO Auto-generated method stub
-        
+        AquatanBlocks.initBlocks();
     }
 
 }

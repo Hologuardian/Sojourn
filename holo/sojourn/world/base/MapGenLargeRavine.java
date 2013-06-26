@@ -1,4 +1,4 @@
-package holo.sojourn.world.aracoria.features;
+package holo.sojourn.world.base;
 
 import java.util.Random;
 

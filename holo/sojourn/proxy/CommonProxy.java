@@ -1,11 +1,13 @@
 package holo.sojourn.proxy;
 
 import holo.sojourn.config.DimensionConfig;
+import holo.sojourn.config.aquatan.AquatanBlockConfig;
 import holo.sojourn.config.aracoria.AracoriaItemConfig;
 import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.GroupManager;
 import holo.sojourn.handler.MobEventHandler;
 import holo.sojourn.handler.tick.ServerTickHandler;
+import holo.sojourn.helper.SojournBlocks;
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.helper.SojournItems;
 import holo.sojourn.network.packet.PacketHandler;
@@ -29,7 +31,7 @@ public class CommonProxy
           tickRegistry();
           eventRegistry();
           SojournItems.initItems();
-//        SojournBlocks.initBlocks();
+          SojournBlocks.initBlocks();
 //        renderRegistry();
 //        SojournRecipes.initRecipes();
 //        SojournNames.initNames();
@@ -49,6 +51,7 @@ public class CommonProxy
         config.load();
         DimensionConfig.initDimensionsConfig(event, config);
         AracoriaItemConfig.initConfig(event, config);
+        AquatanBlockConfig.initConfig(event, config);
         config.save();
     }
     
