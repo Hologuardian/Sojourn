@@ -1,4 +1,4 @@
-package holo.sojourn.world.fungalmarsh;
+package holo.sojourn.world.demorus;
 
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.world.base.BaseChunkManager;
@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class FungalMarshWorldProvider extends WorldProvider
+public class DemorusWorldProvider extends WorldProvider
 {
     public BaseWorldType type;
     /**
@@ -18,21 +18,18 @@ public class FungalMarshWorldProvider extends WorldProvider
      */
     public void registerWorldChunkManager()
     {
-        type = new BaseWorldType(0, "FungalMarsh");
+        type = new BaseWorldType(0, "Demorus");
         for (BiomeGenBase biome : type.base12Biomes)
         {
             type.removeBiome(biome);
         }
-        type.addNewBiome(BiomeGenBase.swampland);
-        type.addNewBiome(BiomeGenBase.extremeHills);
-        type.addNewBiome(SojournDimensionRegistry.aracoriaBiome2);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome2);
         
-        type.addBiomeTransition(BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.river);
-        type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.jungle);
-        type.addBiomeTransition(BiomeGenBase.swampland, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.frozenRiver);
+        type.addBiomeTransition(SojournDimensionRegistry.demorusBiome, SojournDimensionRegistry.demorusBiome2, SojournDimensionRegistry.demorusValleyBiome);
         
-        type.setWaterSnowHeight(121, 205);
-        type.setBiomeSize(1);
+        type.setWaterSnowHeight(63, 205);
+        type.setBiomeSize(4);
         
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
 //        

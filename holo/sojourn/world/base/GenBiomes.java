@@ -45,12 +45,9 @@ public class GenBiomes extends GenLayer
     public static GenLayer[] initializeNewBiomeGenerators(long par0, BaseWorldType type)
     {
         GenLayerBase genlayerfuzzyzoom = new GenLayerBase(1L, type.getBiomesForWorldType()[0].biomeID);
-        byte b0 = 4;
-
-        if (type == WorldType.LARGE_BIOMES)
-        {
-            b0 = 6;
-        }
+        
+        byte b0 = (byte) type.biomeSize;
+        
         b0 = getModdedBiomeSize(type, b0);
 
         GenLayer genlayer = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 0);

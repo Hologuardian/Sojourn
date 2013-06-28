@@ -80,6 +80,6 @@ public class AquatanWorldProvider extends WorldProvider
      */
     public String getDimensionName()
     {
-        return "Aracoria";
+        return "Aquatan";
     }
 }

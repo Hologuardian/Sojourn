@@ -1,16 +1,16 @@
-package holo.sojourn.world.fungalmarsh;
+package holo.sojourn.world.moltar;
 
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.world.base.BaseChunkManager;
-import holo.sojourn.world.base.BaseChunkProvider;
 import holo.sojourn.world.base.BaseWorldType;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class FungalMarshWorldProvider extends WorldProvider
+public class MoltarWorldProvider extends WorldProvider
 {
     public BaseWorldType type;
     /**
@@ -18,25 +18,31 @@ public class FungalMarshWorldProvider extends WorldProvider
      */
     public void registerWorldChunkManager()
     {
-        type = new BaseWorldType(0, "FungalMarsh");
+        this.hasNoSky = true;
+        
+        type = new BaseWorldType(0, "Moltar");
         for (BiomeGenBase biome : type.base12Biomes)
         {
             type.removeBiome(biome);
+            
         }
-        type.addNewBiome(BiomeGenBase.swampland);
-        type.addNewBiome(BiomeGenBase.extremeHills);
-        type.addNewBiome(SojournDimensionRegistry.aracoriaBiome2);
+        type.addNewBiome(SojournDimensionRegistry.moltarValleyBiome);
+        type.addNewBiome(SojournDimensionRegistry.moltarBiome);
         
-        type.addBiomeTransition(BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.river);
-        type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.jungle);
-        type.addBiomeTransition(BiomeGenBase.swampland, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.frozenRiver);
+        type.addBiomeTransition(SojournDimensionRegistry.moltarValleyBiome, SojournDimensionRegistry.moltarBiome, SojournDimensionRegistry.moltarValleyBiome);
         
-        type.setWaterSnowHeight(121, 205);
+        type.setWaterSnowHeight(152, 257);
         type.setBiomeSize(1);
         
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
-//        
-//        this.worldChunkMgr = new WorldChunkManagerHell(SojournDimensionRegistry.fungalMarshBiome, 1.0F, 1.0F);
+    }
+
+    /**
+     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+     */
+    public float calculateCelestialAngle(long par1, float par3)
+    {
+        return -0.5F;
     }
     
     @SideOnly(Side.CLIENT)
@@ -56,7 +62,7 @@ public class FungalMarshWorldProvider extends WorldProvider
      */
     public IChunkProvider createChunkGenerator()
     {
-        return new BaseChunkProvider(this.worldObj, this.worldObj.getSeed(), false, type);
+        return new MoltarChunkProvider(this.worldObj, this.worldObj.getSeed(), false, type);
     }
 
     /**
@@ -88,6 +94,6 @@ public class FungalMarshWorldProvider extends WorldProvider
      */
     public String getDimensionName()
     {
-        return "Fungal Marsh";
+        return "Moltar";
     }
 }

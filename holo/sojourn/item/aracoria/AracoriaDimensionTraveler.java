@@ -26,25 +26,25 @@ public class AracoriaDimensionTraveler extends ItemSojourn
         {
             if(playerMP instanceof EntityPlayerMP)
             {
-                int dimensionID = DimensionConfig.fungalMarshDimensionID;
-                EntityPlayer player = (EntityPlayerMP) playerMP;
+                int dimensionID = DimensionConfig.demorusDimensionID;
+                EntityPlayerMP player = (EntityPlayerMP) playerMP;
                 //par5Entity.setInPortal();
                 //if(par5Entity.getPortalCooldown() == 0)
                 //if(Math.random() > 0.999)
 
-                if(playerMP.timeUntilPortal == 0 && playerMP instanceof EntityPlayerMP)
+                if(player.timeUntilPortal == 0)
                 {
-                    playerMP.timeUntilPortal = 100;
+                    player.timeUntilPortal = 100;
                     MinecraftServer minecraftserver = MinecraftServer.getServer();
-                    int dimID = playerMP.dimension;
+                    int dimID = player.dimension;
                     WorldServer worldserver = minecraftserver.worldServerForDimension(0);
                     WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionID);
                     if(dimID == dimensionID)
                     {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, 0, new AracoriaTeleporter(worldserver));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, 0, new AracoriaTeleporter(worldserver));
                         
                     } else {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, dimensionID, new AracoriaTeleporter(worldserver1));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, dimensionID, new AracoriaTeleporter(worldserver1));
                         //par5Entity.travelToDimension(Atum.dimensionID);
                     }
                 }

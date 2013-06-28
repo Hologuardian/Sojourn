@@ -1,4 +1,4 @@
-package holo.sojourn.world.fungalmarsh;
+package holo.sojourn.world.moltar;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
@@ -10,7 +10,7 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
-import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
+import holo.sojourn.world.base.BaseWorldType;
 import holo.sojourn.world.base.HighCaveGen;
 import holo.sojourn.world.base.HighRavineGen;
 
@@ -43,7 +43,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class FungalMarshChunkProvider implements IChunkProvider
+public class MoltarChunkProvider implements IChunkProvider
 {
     /** RNG. */
     private Random rand;
@@ -124,7 +124,9 @@ public class FungalMarshChunkProvider implements IChunkProvider
         ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
     }
     
-    public FungalMarshChunkProvider(World par1World, long par2, boolean par4)
+    public BaseWorldType worldType;
+    
+    public MoltarChunkProvider(World par1World, long par2, boolean par4, BaseWorldType type)
     {
         this.worldObj = par1World;
         this.mapFeaturesEnabled = par4;
@@ -146,6 +148,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
         this.noiseGen5 = noiseGens[4];
         this.noiseGen6 = noiseGens[5];
         this.mobSpawnerNoise = noiseGens[6];
+        this.worldType = type;
     }
 
     /**
@@ -156,7 +159,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
     {
         byte b0 = 4;
         byte b1 = 32;
-        int b2 = 121;
+        int b2 = this.worldType.waterHeight;
         int k = b0 + 1;
         byte b3 = 33;
         int l = b0 + 1;
@@ -204,7 +207,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
                                 }
                                 else if (k1 * 8 + l1 < b2)
                                 {
-                                    par3ArrayOfByte[j2 += short1] = (byte)Block.waterStill.blockID;
+                                    par3ArrayOfByte[j2 += short1] = (byte)Block.lavaStill.blockID; //water
                                 }
                                 else
                                 {
@@ -235,8 +238,8 @@ public class FungalMarshChunkProvider implements IChunkProvider
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
 
-        int b0 = 118;
-        int snowCap = 190;
+        int b0 = this.worldType.waterHeight;
+        int snowCap = this.worldType.snowHeight;
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d0 * 2.0D, d0 * 2.0D, d0 * 2.0D);
 
@@ -286,11 +289,11 @@ public class FungalMarshChunkProvider implements IChunkProvider
                                 {
                                     if (f < 0.15F)
                                     {
-                                        b1 = (byte)Block.ice.blockID;
+                                        b1 = (byte)Block.lavaStill.blockID;
                                     }
                                     else
                                     {
-                                        b1 = (byte)Block.waterStill.blockID;
+                                        b1 = (byte)Block.lavaStill.blockID; //water
                                     }
                                 }
 

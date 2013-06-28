@@ -1,16 +1,16 @@
-package holo.sojourn.world.aracoria.biome;
+package holo.sojourn.world.demorus.biome;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class AracoriaBiome2 extends BiomeGenBase
+public class DemorusBiome extends BiomeGenBase
 {
-    public AracoriaBiome2(int par1)
+    public DemorusBiome(int par1)
     {
         super(par1);
-        this.setBiomeName("Aracoria2");
-        this.minHeight = 2.8F;
-        this.maxHeight = 2.8F;
+        this.setBiomeName("Demorus Wasteland");
+        this.minHeight = -0.1F;
+        this.maxHeight = 0.1F;
         this.theBiomeDecorator.treesPerChunk = 0;
         this.theBiomeDecorator.grassPerChunk = 0;
         this.theBiomeDecorator.flowersPerChunk = 0;
@@ -23,5 +23,7 @@ public class AracoriaBiome2 extends BiomeGenBase
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
+        
+        this.setDisableRain();
     }
 }

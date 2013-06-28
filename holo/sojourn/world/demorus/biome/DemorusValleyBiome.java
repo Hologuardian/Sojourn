@@ -1,16 +1,16 @@
-package holo.sojourn.world.aracoria.biome;
+package holo.sojourn.world.demorus.biome;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class AracoriaBiome2 extends BiomeGenBase
+public class DemorusValleyBiome extends BiomeGenBase
 {
-    public AracoriaBiome2(int par1)
+    public DemorusValleyBiome(int par1)
     {
         super(par1);
-        this.setBiomeName("Aracoria2");
-        this.minHeight = 2.8F;
-        this.maxHeight = 2.8F;
+        this.setBiomeName("Demorus Valley");
+        this.minHeight = -1.9F;
+        this.maxHeight = 0F;
         this.theBiomeDecorator.treesPerChunk = 0;
         this.theBiomeDecorator.grassPerChunk = 0;
         this.theBiomeDecorator.flowersPerChunk = 0;

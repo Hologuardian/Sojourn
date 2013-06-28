@@ -1,4 +1,4 @@
-package holo.sojourn.world.fungalmarsh;
+package holo.sojourn.world.base;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
@@ -43,7 +43,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class FungalMarshChunkProvider implements IChunkProvider
+public class BaseChunkProvider implements IChunkProvider
 {
     /** RNG. */
     private Random rand;
@@ -124,7 +124,9 @@ public class FungalMarshChunkProvider implements IChunkProvider
         ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
     }
     
-    public FungalMarshChunkProvider(World par1World, long par2, boolean par4)
+    public BaseWorldType worldType;
+    
+    public BaseChunkProvider(World par1World, long par2, boolean par4, BaseWorldType type)
     {
         this.worldObj = par1World;
         this.mapFeaturesEnabled = par4;
@@ -146,6 +148,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
         this.noiseGen5 = noiseGens[4];
         this.noiseGen6 = noiseGens[5];
         this.mobSpawnerNoise = noiseGens[6];
+        this.worldType = type;
     }
 
     /**
@@ -156,7 +159,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
     {
         byte b0 = 4;
         byte b1 = 32;
-        int b2 = 121;
+        int b2 = this.worldType.waterHeight;
         int k = b0 + 1;
         byte b3 = 33;
         int l = b0 + 1;
@@ -235,8 +238,8 @@ public class FungalMarshChunkProvider implements IChunkProvider
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
 
-        int b0 = 118;
-        int snowCap = 190;
+        int b0 = this.worldType.waterHeight;
+        int snowCap = this.worldType.snowHeight;
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d0 * 2.0D, d0 * 2.0D, d0 * 2.0D);
 
@@ -299,7 +302,7 @@ public class FungalMarshChunkProvider implements IChunkProvider
                                 if (k1 >= b0 - 1)
                                 {
                                     par3ArrayOfByte[l1] = b1;
-                                    if (k1 >= snowCap)
+                                    if (k1 >= snowCap && k1 != 255)
                                     {
                                         par3ArrayOfByte[l1 + 1] = (byte) Block.snow.blockID;
                                     }
