@@ -13,7 +13,7 @@ import net.minecraft.world.WorldServer;
 
 public class AracoriaDimensionTraveler extends ItemSojourn
 {
-
+    
     public AracoriaDimensionTraveler(int par1, String name)
     {
         super(par1, name);
@@ -26,6 +26,7 @@ public class AracoriaDimensionTraveler extends ItemSojourn
         {
             if(playerMP instanceof EntityPlayerMP)
             {
+                int dimensionID = DimensionConfig.fungalMarshDimensionID;
                 EntityPlayer player = (EntityPlayerMP) playerMP;
                 //par5Entity.setInPortal();
                 //if(par5Entity.getPortalCooldown() == 0)
@@ -37,13 +38,13 @@ public class AracoriaDimensionTraveler extends ItemSojourn
                     MinecraftServer minecraftserver = MinecraftServer.getServer();
                     int dimID = playerMP.dimension;
                     WorldServer worldserver = minecraftserver.worldServerForDimension(0);
-                    WorldServer worldserver1 = minecraftserver.worldServerForDimension(DimensionConfig.aracoriaDimensionID);
-                    if(dimID == DimensionConfig.aracoriaDimensionID)
+                    WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionID);
+                    if(dimID == dimensionID)
                     {
                         minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, 0, new AracoriaTeleporter(worldserver));
                         
                     } else {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, DimensionConfig.aquatanDimensionID, new AracoriaTeleporter(worldserver1));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) playerMP, dimensionID, new AracoriaTeleporter(worldserver1));
                         //par5Entity.travelToDimension(Atum.dimensionID);
                     }
                 }

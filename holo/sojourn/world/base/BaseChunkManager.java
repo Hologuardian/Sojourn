@@ -49,10 +49,13 @@ public class BaseChunkManager extends WorldChunkManager
     public BaseChunkManager(long par1, WorldType par3WorldType)
     {
         this(par3WorldType);
-        GenLayer[] agenlayer = GenBiomes.initializeAllBiomeGenerators(par1, par3WorldType);
-        agenlayer = getModdedBiomeGenerators(par3WorldType, par1, agenlayer);
-        this.genBiomes = agenlayer[0];
-        this.biomeIndexLayer = agenlayer[1];
+        if (par3WorldType instanceof BaseWorldType)
+        {
+            GenLayer[] agenlayer = GenBiomes.initializeNewBiomeGenerators(par1, (BaseWorldType) par3WorldType);
+            agenlayer = getModdedBiomeGenerators(par3WorldType, par1, agenlayer);
+            this.genBiomes = agenlayer[0];
+            this.biomeIndexLayer = agenlayer[1];
+        }
     }
 
     public BaseChunkManager(World par1World)

@@ -25,9 +25,9 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 public class MobEventHandler
 {
-    static final boolean accountForArmor = true;
+    static final boolean accountForArmor = false;
     static final float armorScale = 0.2F;
-    static final boolean accountForWeapons = true;
+    static final boolean accountForWeapons = false;
     static final float weaponScale = 0.15F;
     static final boolean balanceRanged = false;
     static final boolean accountForDifficulty = false;
@@ -51,10 +51,10 @@ public class MobEventHandler
     @ForgeSubscribe
     public void handleLivingDrops(LivingDropsEvent e)
     {
-        if(!(e.entityLiving instanceof EntityMob))
+        int difficulty = this.getDifficultyValue(e.entityLiving.worldObj, e.entityLiving);
+        if(!(e.entityLiving instanceof EntityMob) || difficulty < 1)
             return;
         
-        int difficulty = this.getDifficultyValue(e.entityLiving.worldObj, e.entityLiving);
         ArrayList<EntityItem> items = new ArrayList<EntityItem>();
         for (EntityItem item : e.drops)
             items.add(item);

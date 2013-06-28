@@ -1,25 +1,21 @@
-package holo.sojourn.world.aracoria.biome;
+package holo.sojourn.world.fungalmarsh.biome;
 
-import holo.sojourn.world.aracoria.features.*;
 import holo.sojourn.world.fungalmarsh.features.MapGenLargeMushrooms;
 import holo.sojourn.world.fungalmarsh.features.MapGenMushrooms;
-import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 
-public class AracoriaBiomeDecorator extends BiomeDecorator
+public class FungalMarshBiomeDecorator extends BiomeDecorator
 {
-    public WorldGenerator glowingSpikeGen;
     public WorldGenerator mushroomsGen;
     public WorldGenerator mushroomsBigGen;
 
-    public AracoriaBiomeDecorator(BiomeGenBase par1BiomeGenBase)
+    public FungalMarshBiomeDecorator(BiomeGenBase par1BiomeGenBase)
     {
         super(par1BiomeGenBase);
-        this.glowingSpikeGen = new GlowingSpikes(Block.cobblestone.blockID, Block.waterMoving.blockID);
         this.mushroomsGen = new MapGenMushrooms();
         this.mushroomsBigGen = new MapGenLargeMushrooms();
     }
@@ -34,14 +30,6 @@ public class AracoriaBiomeDecorator extends BiomeDecorator
         int i;
         int j;
         int k;
-        
-        for (int n = 0; n < 3; n++)
-        {
-            i = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-            j = 5;
-            k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-            this.glowingSpikeGen.generate(currentWorld, randomGenerator, i, j, k);
-        }
         
         if (randomGenerator.nextInt(5) == 0)
         {
