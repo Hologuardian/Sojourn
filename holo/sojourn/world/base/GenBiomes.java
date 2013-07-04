@@ -1,21 +1,19 @@
 package holo.sojourn.world.base;
 
-import holo.sojourn.world.base.genlayers.*;
+import holo.sojourn.world.base.genlayers.BaseGenLayerAddBiomes;
+import holo.sojourn.world.base.genlayers.BaseGenLayerBiome;
+import holo.sojourn.world.base.genlayers.BaseGenLayerHills;
+import holo.sojourn.world.base.genlayers.BaseGenLayerRiver;
+import holo.sojourn.world.base.genlayers.BaseGenLayerShore;
+import holo.sojourn.world.base.genlayers.GenLayerBase;
+
+import java.util.ArrayList;
+
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.GenLayerAddIsland;
-import net.minecraft.world.gen.layer.GenLayerAddMushroomIsland;
-import net.minecraft.world.gen.layer.GenLayerAddSnow;
-import net.minecraft.world.gen.layer.GenLayerBiome;
-import net.minecraft.world.gen.layer.GenLayerFuzzyZoom;
-import net.minecraft.world.gen.layer.GenLayerHills;
-import net.minecraft.world.gen.layer.GenLayerIsland;
-import net.minecraft.world.gen.layer.GenLayerRiver;
-import net.minecraft.world.gen.layer.GenLayerRiverInit;
 import net.minecraft.world.gen.layer.GenLayerRiverMix;
-import net.minecraft.world.gen.layer.GenLayerShore;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
-import net.minecraft.world.gen.layer.GenLayerSwampRivers;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,6 +70,30 @@ public class GenBiomes extends GenLayer
 
         for (int j = 0; j < b0; ++j)
         {
+
+//            ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+//            for (BiomeGenBase biome : type.majorBiomes.keySet())
+//            {
+//                if (type.majorBiomes.get(biome) == b0 - j)
+//                {
+//                    biomes.add(biome);
+//                }
+//            }
+//            
+//            if (!(biomes.isEmpty()))
+//            {
+//                BiomeGenBase[] biomeArray = new BiomeGenBase[biomes.size()];
+//                int i = 0;
+//                for (BiomeGenBase biome : biomes)
+//                {
+//                    biomeArray[i] = biome;
+//                    i++;
+//                }
+//                BaseGenLayerAddBiomes genlayerbiomes = new BaseGenLayerAddBiomes(200L,(GenLayer) object, biomeArray);
+//                object = GenLayerZoom.magnify(1000L, genlayerbiomes, 2);
+//            }
+            
+            
             object = new GenLayerZoom((long)(1000 + j), (GenLayer)object);
 
             if (j == 1)

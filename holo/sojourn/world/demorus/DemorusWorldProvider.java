@@ -23,8 +23,8 @@ public class DemorusWorldProvider extends WorldProvider
         {
             type.removeBiome(biome);
         }
-        type.addNewBiome(SojournDimensionRegistry.demorusBiome);
-        type.addNewBiome(SojournDimensionRegistry.demorusBiome2);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome, 4);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome2, 4);
         
         type.addBiomeTransition(SojournDimensionRegistry.demorusBiome, SojournDimensionRegistry.demorusBiome2, SojournDimensionRegistry.demorusValleyBiome);
         

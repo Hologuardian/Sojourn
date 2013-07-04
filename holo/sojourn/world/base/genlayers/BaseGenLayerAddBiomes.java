@@ -1,19 +1,20 @@
 package holo.sojourn.world.base.genlayers;
 
-import holo.sojourn.world.base.BaseWorldType;
+import java.util.ArrayList;
+
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-public class BaseGenLayerBiome extends GenLayer
+public class BaseGenLayerAddBiomes extends GenLayer
 {
     /** this sets all the biomes that are allowed to appear in the overworld */
     private BiomeGenBase[] allowedBiomes;
 
-    public BaseGenLayerBiome(long par1, GenLayer par3GenLayer, BaseWorldType worldType)
+    public BaseGenLayerAddBiomes(long par1, GenLayer par3GenLayer, BiomeGenBase[] biomes)
     {
         super(par1);
-        this.allowedBiomes = worldType.getBiomesForWorldType();
+        this.allowedBiomes = biomes;
         this.parent = par3GenLayer;
     }
 

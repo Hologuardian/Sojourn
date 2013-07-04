@@ -11,17 +11,18 @@ public class DemorusValleyBiome extends BiomeGenBase
         this.setBiomeName("Demorus Valley");
         this.minHeight = -1.9F;
         this.maxHeight = 0F;
-        this.theBiomeDecorator.treesPerChunk = 0;
-        this.theBiomeDecorator.grassPerChunk = 0;
-        this.theBiomeDecorator.flowersPerChunk = 0;
+        this.theBiomeDecorator.treesPerChunk = 6;
+        this.theBiomeDecorator.grassPerChunk = 24;
+        this.theBiomeDecorator.flowersPerChunk = 12;
         this.topBlock = (byte) Block.grass.blockID;
         this.fillerBlock = (byte) Block.dirt.blockID;
 //        this.setEnableSnow();
-//        this.setTemperatureRainfall(0.05F, 0.8F);
+        this.setTemperatureRainfall(1F, 1F);
         
         this.spawnableMonsterList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
+        
     }
 }

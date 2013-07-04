@@ -1,7 +1,11 @@
 package holo.sojourn.world.base;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -9,6 +13,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BaseWorldType extends WorldType
 {
+    public Map<BiomeGenBase, Integer> majorBiomes;
     public Map<BiomeGenBase, BiomeGenBase> hills;
     public Map<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>> subBiomes;
     public BiomeGenBase river;
@@ -22,6 +27,7 @@ public class BaseWorldType extends WorldType
         super(par1, par2Str, par3);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
+        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.river = null;
         this.waterHeight = 121;
         this.snowHeight = 205;
@@ -33,6 +39,7 @@ public class BaseWorldType extends WorldType
         super(par1, par2Str);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
+        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.river = null;
         this.waterHeight = 121;
         this.snowHeight = 205;
@@ -42,6 +49,7 @@ public class BaseWorldType extends WorldType
     public BaseWorldType(int par1, String par2Str, Map<BiomeGenBase, BiomeGenBase> hillBiomes, Map<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>> subB, BiomeGenBase rivers)
     {
         super(par1, par2Str);
+        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.hills = hillBiomes;
         this.subBiomes = subB;
         this.river = rivers;
@@ -87,5 +95,17 @@ public class BaseWorldType extends WorldType
     public double getHorizon(World world)
     {
         return this.waterHeight;
+    }
+
+    public void addNewBiome(BiomeGenBase biome)
+    {
+        super.addNewBiome(biome);
+        this.majorBiomes.put(biome, this.biomeSize);
+    }
+
+    public void addNewBiome(BiomeGenBase biome, int size)
+    {
+        this.addNewBiome(biome);
+        this.majorBiomes.put(biome, size);
     }
 }

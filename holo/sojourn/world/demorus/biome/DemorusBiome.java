@@ -1,5 +1,7 @@
 package holo.sojourn.world.demorus.biome;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -25,5 +27,25 @@ public class DemorusBiome extends BiomeGenBase
         this.spawnableWaterCreatureList.clear();
         
         this.setDisableRain();
+    }
+
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Provides the basic grass color based on the biome temperature and rainfall
+     */
+    public int getBiomeGrassColor()
+    {
+        return 0xFF000000 + 0x7F4800;
+    }
+
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Provides the basic foliage color based on the biome temperature and rainfall
+     */
+    public int getBiomeFoliageColor()
+    {
+        return 0xFF000000 + 0x7F4800;
     }
 }
