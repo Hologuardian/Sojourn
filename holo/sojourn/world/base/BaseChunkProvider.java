@@ -1,18 +1,10 @@
 package holo.sojourn.world.base;
 
-import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
-import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.RAVINE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCATTERED_FEATURE;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE;
-import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.DUNGEON;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
-import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
-import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
-import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
-import holo.sojourn.world.base.HighCaveGen;
-import holo.sojourn.world.base.HighRavineGen;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +24,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.MapGenScatteredFeature;
-import net.minecraft.world.gen.feature.WorldGenDungeons;
-import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
@@ -76,7 +66,7 @@ public class BaseChunkProvider implements IChunkProvider
     /** Holds the overall noise array used in chunk generation */
     private double[] noiseArray;
     private double[] stoneNoise = new double[256];
-    private MapGenBase caveGenerator = new HighCaveGen();
+    private MapGenBase caveGenerator;
 
     /** Holds Stronghold Generator */
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
@@ -89,7 +79,7 @@ public class BaseChunkProvider implements IChunkProvider
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 
     /** Holds ravine generator */
-    private MapGenBase ravineGenerator = new HighRavineGen();
+    private MapGenBase ravineGenerator;
 
     /** The biomes that are used to generate the chunk */
     private BiomeGenBase[] biomesForGeneration;
@@ -116,12 +106,10 @@ public class BaseChunkProvider implements IChunkProvider
     int[][] field_73219_j = new int[32][32];
 
     {
-        caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
         strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
         villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
         mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator, MINESHAFT);
         scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator, SCATTERED_FEATURE);
-        ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
     }
     
     public BaseWorldType worldType;
@@ -149,6 +137,9 @@ public class BaseChunkProvider implements IChunkProvider
         this.noiseGen6 = noiseGens[5];
         this.mobSpawnerNoise = noiseGens[6];
         this.worldType = type;
+        
+        caveGenerator = type.caveGen;
+        ravineGenerator = type.ravineGen;
     }
 
     /**
@@ -203,7 +194,7 @@ public class BaseChunkProvider implements IChunkProvider
                             {
                                 if ((d16 += d15) > 0.0D)
                                 {
-                                    par3ArrayOfByte[j2 += short1] = (byte)Block.stone.blockID; //stone
+                                    par3ArrayOfByte[j2 += short1] = this.worldType.fillBlock; //stone
                                 }
                                 else if (k1 * 8 + l1 < b2)
                                 {
@@ -270,14 +261,14 @@ public class BaseChunkProvider implements IChunkProvider
                         {
                             j1 = -1;
                         }
-                        else if (b3 == Block.stone.blockID) // stone
+                        else if (b3 == this.worldType.fillBlock) // stone
                         {
                             if (j1 == -1)
                             {
                                 if (i1 <= 0)
                                 {
                                     b1 = 0;
-                                    b2 = (byte)Block.stone.blockID;//stone
+                                    b2 = this.worldType.fillBlock;//stone
                                 }
                                 else if (k1 >= b0 - 4 && k1 <= b0 + 1)
                                 {
@@ -349,8 +340,10 @@ public class BaseChunkProvider implements IChunkProvider
         this.generateTerrain(par1, par2, abyte);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.replaceBlocksForBiome(par1, par2, abyte, this.biomesForGeneration);
-        this.caveGenerator.generate(this, this.worldObj, par1, par2, abyte);
-        this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
+        if (this.caveGenerator != null)
+            this.caveGenerator.generate(this, this.worldObj, par1, par2, abyte);
+        if (this.ravineGenerator != null)
+            this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
 
         if (this.mapFeaturesEnabled)
         {
@@ -429,8 +422,8 @@ public class BaseChunkProvider implements IChunkProvider
         this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, par2, par3, par4, par5, par6, par7, d0 / 80.0D, d1 / 160.0D, d0 / 80.0D);
         this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, par2, par3, par4, par5, par6, par7, d0, d1, d0);
         this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, par2, par3, par4, par5, par6, par7, d0, d1, d0);
-        boolean flag = false;
-        boolean flag1 = false;
+//        boolean flag = false;
+//        boolean flag1 = false;
         int i2 = 0;
         int j2 = 0;
 
@@ -573,59 +566,25 @@ public class BaseChunkProvider implements IChunkProvider
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
 
-        if (this.mapFeaturesEnabled)
-        {
-            this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-        }
+        //TODO add custom structure gen
+//        if (this.mapFeaturesEnabled)
+//        {
+//            this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+//            flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+//            this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+//            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+//        }
 
         int k1;
         int l1;
         int i2;
-
-        if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, LAKE) && 
-                !flag && this.rand.nextInt(4) == 0)
-        {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(128);
-            i2 = l + this.rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(this.worldObj, this.rand, k1, l1, i2);
-        }
-
-        if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, LAVA) &&
-                !flag && this.rand.nextInt(8) == 0)
-        {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
-            i2 = l + this.rand.nextInt(16) + 8;
-
-            if (l1 < 63 || this.rand.nextInt(1000) == 0)
-            {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, k1, l1, i2);
-            }
-        }
-
-        boolean doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, DUNGEON);
-        for (k1 = 0; doGen && k1 < 8; ++k1)
-        {
-            l1 = k + this.rand.nextInt(16) + 8;
-            i2 = this.rand.nextInt(128);
-            int j2 = l + this.rand.nextInt(16) + 8;
-
-            if ((new WorldGenDungeons()).generate(this.worldObj, this.rand, l1, i2, j2))
-            {
-                ;
-            }
-        }
 
         biomegenbase.decorate(this.worldObj, this.rand, k, l);
         SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
         k += 8;
         l += 8;
 
-        doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ICE);
+        boolean doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ICE);
         for (k1 = 0; doGen && k1 < 16; ++k1)
         {
             for (l1 = 0; l1 < 16; ++l1)

@@ -10,7 +10,7 @@ public class DemorusBiome2 extends BiomeGenBase
     public DemorusBiome2(int par1)
     {
         super(par1);
-        this.setBiomeName("Demorus Wasteland");
+        this.setBiomeName("Demorus Wasteland 2");
         this.minHeight = -0.1F;
         this.maxHeight = 0.1F;
         this.theBiomeDecorator.treesPerChunk = 0;
@@ -25,6 +25,7 @@ public class DemorusBiome2 extends BiomeGenBase
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
+        this.theBiomeDecorator.generateLakes = false;
 
         this.setDisableRain();
     }

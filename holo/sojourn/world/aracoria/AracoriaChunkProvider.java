@@ -11,6 +11,7 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
 import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
+import holo.sojourn.world.aracoria.features.MapGenEssenceSpike;
 import holo.sojourn.world.base.HighCaveGen;
 import holo.sojourn.world.base.HighRavineGen;
 
@@ -34,6 +35,7 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.MapGenScatteredFeature;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
@@ -115,6 +117,8 @@ public class AracoriaChunkProvider implements IChunkProvider
     float[] parabolicField;
     int[][] field_73219_j = new int[32][32];
 
+    public WorldGenerator essenceSpikeGen;
+    
     {
         caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
         strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
@@ -146,6 +150,8 @@ public class AracoriaChunkProvider implements IChunkProvider
         this.noiseGen5 = noiseGens[4];
         this.noiseGen6 = noiseGens[5];
         this.mobSpawnerNoise = noiseGens[6];
+
+        this.essenceSpikeGen = new MapGenEssenceSpike(Block.cobblestone.blockID, Block.waterMoving.blockID);
     }
 
     /**
@@ -554,9 +560,9 @@ public class AracoriaChunkProvider implements IChunkProvider
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
         BlockSand.fallInstantly = true;
-        int k = par2 * 16;
-        int l = par3 * 16;
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
+        int x = par2 * 16;
+        int z = par3 * 16;
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -565,75 +571,17 @@ public class AracoriaChunkProvider implements IChunkProvider
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
 
-        if (this.mapFeaturesEnabled)
+
+        int i;
+        int j;
+        int k;
+        
+        if (this.rand.nextInt(4) == 0)
         {
-            this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-        }
-
-        int k1;
-        int l1;
-        int i2;
-
-        if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, LAKE) && 
-                !flag && this.rand.nextInt(4) == 0)
-        {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(128);
-            i2 = l + this.rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(this.worldObj, this.rand, k1, l1, i2);
-        }
-
-        if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, LAVA) &&
-                !flag && this.rand.nextInt(8) == 0)
-        {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(this.rand.nextInt(120) + 8);
-            i2 = l + this.rand.nextInt(16) + 8;
-
-            if (l1 < 63 || this.rand.nextInt(1000) == 0)
-            {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, k1, l1, i2);
-            }
-        }
-
-        boolean doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, DUNGEON);
-        for (k1 = 0; doGen && k1 < 8; ++k1)
-        {
-            l1 = k + this.rand.nextInt(16) + 8;
-            i2 = this.rand.nextInt(128);
-            int j2 = l + this.rand.nextInt(16) + 8;
-
-            if ((new WorldGenDungeons()).generate(this.worldObj, this.rand, l1, i2, j2))
-            {
-                ;
-            }
-        }
-
-        biomegenbase.decorate(this.worldObj, this.rand, k, l);
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
-        k += 8;
-        l += 8;
-
-        doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ICE);
-        for (k1 = 0; doGen && k1 < 16; ++k1)
-        {
-            for (l1 = 0; l1 < 16; ++l1)
-            {
-                i2 = this.worldObj.getPrecipitationHeight(k + k1, l + l1);
-
-                if (this.worldObj.isBlockFreezable(k1 + k, i2 - 1, l1 + l))
-                {
-                    this.worldObj.setBlock(k1 + k, i2 - 1, l1 + l, Block.ice.blockID, 0, 2);
-                }
-
-                if (this.worldObj.canSnowAt(k1 + k, i2, l1 + l))
-                {
-                    this.worldObj.setBlock(k1 + k, i2, l1 + l, Block.snow.blockID, 0, 2);
-                }
-            }
+            i = x + this.rand.nextInt(16) + 8;
+            k = z + this.rand.nextInt(16) + 8;
+            j = this.worldObj.getTopSolidOrLiquidBlock(i, k);
+            this.essenceSpikeGen.generate(this.worldObj, this.rand, i, j, k);
         }
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));

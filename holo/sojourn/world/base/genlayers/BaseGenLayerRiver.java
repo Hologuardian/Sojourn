@@ -39,7 +39,7 @@ public class BaseGenLayerRiver extends GenLayer
 
                 if (k3 != 0 && k2 != 0 && l2 != 0 && i3 != 0 && j3 != 0 && k3 == k2 && k3 == i3 && k3 == l2 && k3 == j3)
                 {
-                    aint1[j2 + i2 * par3] = -1;
+//                    aint1[j2 + i2 * par3] = -1;
                 }
                 else
                 {

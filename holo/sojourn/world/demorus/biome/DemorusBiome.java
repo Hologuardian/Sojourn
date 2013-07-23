@@ -25,6 +25,7 @@ public class DemorusBiome extends BiomeGenBase
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
+        this.theBiomeDecorator.generateLakes = false;
         
         this.setDisableRain();
     }

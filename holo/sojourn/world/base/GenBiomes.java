@@ -1,18 +1,11 @@
 package holo.sojourn.world.base;
 
-import holo.sojourn.world.base.genlayers.BaseGenLayerAddBiomes;
 import holo.sojourn.world.base.genlayers.BaseGenLayerBiome;
 import holo.sojourn.world.base.genlayers.BaseGenLayerHills;
-import holo.sojourn.world.base.genlayers.BaseGenLayerRiver;
 import holo.sojourn.world.base.genlayers.BaseGenLayerShore;
 import holo.sojourn.world.base.genlayers.GenLayerBase;
-
-import java.util.ArrayList;
-
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.GenLayerRiverMix;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
@@ -50,18 +43,6 @@ public class GenBiomes extends GenLayer
 
         GenLayer genlayer = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 0);
         genlayer = GenLayerZoom.magnify(1000L, genlayer, b0 + 2);
-        BaseGenLayerRiver genlayerriver = null;
-        GenLayerSmooth genlayersmooth = null;
-        
-        if (type.river != null)
-        {
-            genlayerriver = new BaseGenLayerRiver(1L, genlayer, type.river.biomeID);
-            genlayersmooth = new GenLayerSmooth(1000L, genlayerriver);
-        }
-        else
-        {
-            genlayersmooth = new GenLayerSmooth(1000L, genlayer);
-        }
         
         GenLayer genlayer1 = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 0);
         BaseGenLayerBiome genlayerbiome = new BaseGenLayerBiome(200L, genlayer1, type);
@@ -70,30 +51,6 @@ public class GenBiomes extends GenLayer
 
         for (int j = 0; j < b0; ++j)
         {
-
-//            ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
-//            for (BiomeGenBase biome : type.majorBiomes.keySet())
-//            {
-//                if (type.majorBiomes.get(biome) == b0 - j)
-//                {
-//                    biomes.add(biome);
-//                }
-//            }
-//            
-//            if (!(biomes.isEmpty()))
-//            {
-//                BiomeGenBase[] biomeArray = new BiomeGenBase[biomes.size()];
-//                int i = 0;
-//                for (BiomeGenBase biome : biomes)
-//                {
-//                    biomeArray[i] = biome;
-//                    i++;
-//                }
-//                BaseGenLayerAddBiomes genlayerbiomes = new BaseGenLayerAddBiomes(200L,(GenLayer) object, biomeArray);
-//                object = GenLayerZoom.magnify(1000L, genlayerbiomes, 2);
-//            }
-            
-            
             object = new GenLayerZoom((long)(1000 + j), (GenLayer)object);
 
             if (j == 1)
@@ -103,9 +60,7 @@ public class GenBiomes extends GenLayer
         }
 
         GenLayerSmooth genlayersmooth1 = new GenLayerSmooth(1000L, (GenLayer)object);
-        GenLayerRiverMix genlayerrivermix = new GenLayerRiverMix(100L, genlayersmooth1, genlayersmooth);
         GenLayerVoronoiZoom genlayervoronoizoom = new GenLayerVoronoiZoom(10L, genlayersmooth1);
-        genlayerrivermix.initWorldGenSeed(par0);
         genlayervoronoizoom.initWorldGenSeed(par0);
         return new GenLayer[] {genlayersmooth1, genlayervoronoizoom, genlayersmooth1};
     }

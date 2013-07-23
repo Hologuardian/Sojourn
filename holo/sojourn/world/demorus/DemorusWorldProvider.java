@@ -4,6 +4,7 @@ import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.world.base.BaseChunkManager;
 import holo.sojourn.world.base.BaseChunkProvider;
 import holo.sojourn.world.base.BaseWorldType;
+import net.minecraft.block.Block;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -23,17 +24,19 @@ public class DemorusWorldProvider extends WorldProvider
         {
             type.removeBiome(biome);
         }
-        type.addNewBiome(SojournDimensionRegistry.demorusBiome, 4);
-        type.addNewBiome(SojournDimensionRegistry.demorusBiome2, 4);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome);
+        type.addNewBiome(SojournDimensionRegistry.demorusBiome2);
         
         type.addBiomeTransition(SojournDimensionRegistry.demorusBiome, SojournDimensionRegistry.demorusBiome2, SojournDimensionRegistry.demorusValleyBiome);
         
         type.setWaterSnowHeight(63, 205);
         type.setBiomeSize(4);
+        type.setFillBlock(Block.glass.blockID);
         
+        type.setRiverBiome(BiomeGenBase.river);
+        type.caveGen = null;
+        type.ravineGen = null;
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
-//        
-//        this.worldChunkMgr = new WorldChunkManagerHell(SojournDimensionRegistry.fungalMarshBiome, 1.0F, 1.0F);
     }
     
     @SideOnly(Side.CLIENT)
@@ -61,7 +64,7 @@ public class DemorusWorldProvider extends WorldProvider
      */
     public boolean isSurfaceWorld()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -85,6 +88,6 @@ public class DemorusWorldProvider extends WorldProvider
      */
     public String getDimensionName()
     {
-        return "Fungal Marsh";
+        return "Demorus";
     }
 }

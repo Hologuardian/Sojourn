@@ -26,7 +26,7 @@ public class AracoriaDimensionTraveler extends ItemSojourn
         {
             if(playerMP instanceof EntityPlayerMP)
             {
-                int dimensionID = DimensionConfig.demorusDimensionID;
+                int dimensionID = DimensionConfig.fungalMarshDimensionID;
                 EntityPlayerMP player = (EntityPlayerMP) playerMP;
                 //par5Entity.setInPortal();
                 //if(par5Entity.getPortalCooldown() == 0)
