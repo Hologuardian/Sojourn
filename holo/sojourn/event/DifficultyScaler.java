@@ -4,7 +4,7 @@ import holo.sojourn.group.GroupManager;
 
 import java.util.List;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -16,7 +16,7 @@ public class DifficultyScaler
     public void onEntitySpawnEvent(LivingSpawnEvent e)
     {
         World world = e.world;
-        EntityLiving ent = e.entityLiving;
+        EntityLivingBase ent = e.entityLiving;
         int difficulty = 0;
         List<EntityPlayerMP> playerList = world.playerEntities;
         

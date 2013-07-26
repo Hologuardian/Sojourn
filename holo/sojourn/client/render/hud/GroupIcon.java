@@ -3,20 +3,20 @@ package holo.sojourn.client.render.hud;
 import holo.sojourn.client.render.glyph.PlayerGlyphIcon;
 import holo.sojourn.essence.EssenceBar;
 import holo.sojourn.group.Group;
+import holo.sojourn.util.Textures;
 
 import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.StringUtils;
 import net.minecraftforge.common.ForgeHooks;
 
 import org.lwjgl.opengl.GL11;
@@ -58,7 +58,8 @@ public class GroupIcon extends Gui
                 iterator  = group.potionMap.get(p.username).iterator();
             }
 
-            mc.renderEngine.bindTexture("/gui/inventory.png");
+//            mc.renderEngine.bindTexture("/gui/inventory.png");
+            mc.func_110434_K().func_110577_a(Textures.playerInventory);
             int j = 0;      
 
 //            System.out.println(p.username + " " + i + " " + j + " " + p.getActivePotionEffects().toString());
@@ -84,19 +85,8 @@ public class GroupIcon extends Gui
     }
 
     @SideOnly(Side.CLIENT)
-    public void drawPlayerOnGui(EntityPlayer player, int par1, int par2, int par3, float par4, float par5)
+    public void drawPlayerOnGui(EntityLivingBase thePlayer, int par1, int par2, int par3, float par4, float par5)
     {
-        EntityPlayer thePlayer = new EntityOtherPlayerMP(player.worldObj, player.username);
-        thePlayer.copyDataFrom(player, true);
-        thePlayer.swingProgress = player.getSwingProgress(player.swingProgress);
-        if (player.isUsingItem())
-            thePlayer.setItemInUse(player.getItemInUse(), player.getItemInUseCount());
-        thePlayer.ticksExisted = player.ticksExisted;
-        thePlayer.motionX = player.motionX;
-        thePlayer.motionY =  player.motionY;
-        thePlayer.motionZ = player.motionZ;
-        thePlayer.skinUrl = "http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(player.username) + ".png";
-        
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
@@ -139,8 +129,8 @@ public class GroupIcon extends Gui
         GL11.glScalef(targetSize / 9F, targetSize / 9F, targetSize / 9F);
 
         boolean flag1;
-        int i1;
-        int j1;
+        float i1;
+        float j1;
         int i2;
         int k2;
         byte b0;
@@ -148,7 +138,7 @@ public class GroupIcon extends Gui
         int j3;
         int k3;
 
-        this.mc.renderEngine.bindTexture("/gui/icons.png");
+        this.mc.func_110434_K().func_110577_a(Gui.field_110324_m);
         flag1 = player.hurtResistantTime / 3 % 2 == 1;
 
         if (player.hurtResistantTime < 10)
@@ -156,7 +146,7 @@ public class GroupIcon extends Gui
             flag1 = false;
         }
 
-        i1 = player.getHealth();
+        i1 = player.func_110143_aJ();
         j1 = player.prevHealth;
         this.rand.setSeed(this.updateCounter * 312871);
 

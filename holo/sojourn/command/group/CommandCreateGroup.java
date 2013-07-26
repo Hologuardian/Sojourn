@@ -26,7 +26,7 @@ public class CommandCreateGroup extends CommandBase
 
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
-        return par1ICommandSender.translateString("CreateGroup", new Object[0]);
+        return "CreateGroup" + par1ICommandSender.getCommandSenderName();
     }
 
     public void processCommand(ICommandSender p, String[] args)

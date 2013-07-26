@@ -1,6 +1,7 @@
 package holo.sojourn.client.render.hud;
 
 import holo.sojourn.essence.EssenceBar;
+import holo.sojourn.util.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -16,7 +17,6 @@ public class EssenceBarIcon extends Gui
 {
 
     public final Minecraft mc = Minecraft.getMinecraft();
-    
     
     public void renderIcon(EntityPlayer player)
     {
@@ -47,7 +47,7 @@ public class EssenceBarIcon extends Gui
 
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
-        this.mc.renderEngine.bindTexture("/res/texture/essenceBar.png");
+        this.mc.func_110434_K().func_110577_a(Textures.essenceBar);
         
         int x = posX;
         int x1;

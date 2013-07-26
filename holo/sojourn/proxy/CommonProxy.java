@@ -11,6 +11,7 @@ import holo.sojourn.helper.SojournBlocks;
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.helper.SojournItems;
 import holo.sojourn.network.packet.PacketHandler;
+import holo.sojourn.util.Textures;
 
 import java.io.File;
 
@@ -36,6 +37,7 @@ public class CommonProxy
 //        SojournRecipes.initRecipes();
 //        SojournNames.initNames();
           SojournDimensionRegistry.initWorlds();
+          System.out.println(Textures.glyphTex.func_110624_b() + Textures.glyphTex.func_110623_a());
     }
     
     public void tickRegistry() {

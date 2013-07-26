@@ -7,18 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -44,7 +39,7 @@ public class MobEventHandler
 //            System.out.println(difficulty + " " + e.entityLiving.getEntityName());
         if (difficulty > 0)
         {
-            scaler.equipLivingEntity(e.entityLiving, difficulty);
+            scaler.equipLivingEntity((EntityMob)e.entityLiving, difficulty);
         }
     }
     
@@ -60,10 +55,10 @@ public class MobEventHandler
             items.add(item);
         e.drops.clear();
         e.drops.addAll(this.scaler.alterDrops(difficulty, items, e.specialDropValue));
-        e.entityLiving.experienceValue *= difficulty;
+        ((EntityMob)e.entityLiving).experienceValue *= difficulty;
     }
     
-    public int getDifficultyValue(World world, EntityLiving entityLiving)
+    public int getDifficultyValue(World world, EntityLivingBase entityLiving)
     {
         int difficulty = 0;
         int armorLevel = 0;
@@ -75,8 +70,6 @@ public class MobEventHandler
         
         int numPlayers = 0;
         int numMobs = 0;
-        if (world == null)
-            return 0;
         
         List<Entity> entities = world.loadedEntityList;
         for (Entity ent : entities)
@@ -96,8 +89,8 @@ public class MobEventHandler
                 int tempWepValue = 0;
                 for(ItemStack item : ((EntityPlayer) ent).inventory.mainInventory)
                 {
-                    if (item != null && item.getDamageVsEntity(entityLiving) > tempWepValue)
-                        tempWepValue = item.getDamageVsEntity(entityLiving);
+                    if (item != null && item.getMaxDamage() > tempWepValue)
+                        tempWepValue = item.getMaxDamage();
                 }
                 armorLevel += ((EntityPlayer) ent).inventory.getTotalArmorValue();
                 weaponLevel += tempWepValue;

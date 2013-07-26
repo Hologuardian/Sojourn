@@ -6,10 +6,10 @@ import holo.sojourn.proxy.CommonProxy;
 import holo.sojourn.util.Strings;
 import net.minecraft.command.CommandHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -30,26 +30,26 @@ public class Sojourn
         serverSide = Strings.commonProxy)
     public static CommonProxy proxy;
 
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         instance = this;
         proxy.configRegistry(event);
     }
     
-    @Init
+    @EventHandler
     public void Init(FMLInitializationEvent event)
     {
         proxy.init(event);
     }
     
-    @PostInit
+    @EventHandler
     public void PostInit(FMLPostInitializationEvent event)
     {
         
     }
 
-    @ServerStarting
+    @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {       
         CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();

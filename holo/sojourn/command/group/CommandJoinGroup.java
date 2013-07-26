@@ -54,4 +54,10 @@ public class CommandJoinGroup extends CommandBase
     {
         return par2 == 0;
     }
+
+	@Override
+	public String getCommandUsage(ICommandSender par1ICommandSender) 
+	{
+		return "Join Group" + par1ICommandSender.getCommandSenderName();
+	}
 }

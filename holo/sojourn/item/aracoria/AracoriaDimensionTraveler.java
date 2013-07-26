@@ -37,14 +37,14 @@ public class AracoriaDimensionTraveler extends ItemSojourn
                     player.timeUntilPortal = 100;
                     MinecraftServer minecraftserver = MinecraftServer.getServer();
                     int dimID = player.dimension;
-                    WorldServer worldserver = minecraftserver.worldServerForDimension(0);
-                    WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionID);
+                    WorldServer worldServer = minecraftserver.worldServerForDimension(0);
+                    WorldServer worldServer1 = minecraftserver.worldServerForDimension(dimensionID);
                     if(dimID == dimensionID)
                     {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, 0, new AracoriaTeleporter(worldserver));
+                        minecraftserver.getConfigurationManager().transferEntityToWorld((EntityPlayerMP) player, 0, worldServer, worldServer1, new AracoriaTeleporter(worldServer));
                         
                     } else {
-                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, dimensionID, new AracoriaTeleporter(worldserver1));
+                        minecraftserver.getConfigurationManager().transferEntityToWorld((EntityPlayerMP) player, dimensionID, worldServer1, worldServer, new AracoriaTeleporter(worldServer1));
                         //par5Entity.travelToDimension(Atum.dimensionID);
                     }
                 }

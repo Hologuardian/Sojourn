@@ -9,9 +9,9 @@ import java.util.Random;
 
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
@@ -34,7 +34,7 @@ public class DifficultyScaler
         this.addWeaponToList(9, Item.swordDiamond);
     }
     
-    public void equipLivingEntity(EntityLiving entity, int difficulty)
+    public void equipLivingEntity(EntityMob entity, int difficulty)
     {
         int enchantLevel = 0;
         int potionValue = 0;
