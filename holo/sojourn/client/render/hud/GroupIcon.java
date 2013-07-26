@@ -9,13 +9,13 @@ import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -39,15 +39,9 @@ public class GroupIcon extends Gui
         int i = 0;
         for (String name : group.getList())
         {
-            EntityPlayer p = null;
-            if (mc.isIntegratedServerRunning())
-            {
-                p = mc.getIntegratedServer().getConfigurationManager().getPlayerForUsername(name);
-            }
-            else
-            {
-                p = mc.theWorld.getPlayerEntityByName(name);
-            }
+        	AbstractClientPlayer p = null;
+            p = (AbstractClientPlayer) mc.theWorld.getPlayerEntityByName(name);
+            
             drawPlayerOnGui(p, 20, 50 + 50 * i, 20, 0, 0);
             drawPlayerHealthAndArmor(p, 60, 85 + 103 * i, 4.35F);
             new EssenceBarIcon().renderBar(p, 194, 116 + 142 * i, 0.35F, EssenceBar.bars().getScaledEssences(p));
@@ -85,10 +79,13 @@ public class GroupIcon extends Gui
     }
 
     @SideOnly(Side.CLIENT)
-    public void drawPlayerOnGui(EntityLivingBase thePlayer, int par1, int par2, int par3, float par4, float par5)
+    public void drawPlayerOnGui(AbstractClientPlayer thePlayer, int par1, int par2, int par3, float par4, float par5)
     {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        mc.fontRenderer.drawStringWithShadow(thePlayer.username, par1 - 10, par2 - 40, 255 << 16 | 255 << 8 | 255);
+        GL11.glScalef(2.0F, 2.0F, 2.0F);
         GL11.glTranslatef(par1, par2, 50.0F);
         GL11.glScalef((-par3), par3, par3);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -106,7 +103,7 @@ public class GroupIcon extends Gui
         thePlayer.rotationYawHead = -20;
         GL11.glTranslatef(0.0F, thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.playerViewX = 0F;
+        RenderManager.instance.playerViewX = 90F;
         RenderManager.instance.renderEntityWithPosYaw(thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         thePlayer.renderYawOffset = f2;
         thePlayer.rotationYaw = f3;

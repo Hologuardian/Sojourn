@@ -26,18 +26,21 @@ import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy 
 {
-
+	public void preInit(FMLPreInitializationEvent event)
+	{
+//      entityRegistry();
+        SojournItems.initItems();
+        SojournBlocks.initBlocks();
+        SojournDimensionRegistry.initWorlds();
+//      SojournRecipes.initRecipes();
+//      SojournNames.initNames();
+//      renderRegistry();
+	}
+	
+	
     public void init(FMLInitializationEvent event) {
-//        entityRegistry();
           tickRegistry();
           eventRegistry();
-          SojournItems.initItems();
-          SojournBlocks.initBlocks();
-//        renderRegistry();
-//        SojournRecipes.initRecipes();
-//        SojournNames.initNames();
-          SojournDimensionRegistry.initWorlds();
-          System.out.println(Textures.glyphTex.func_110624_b() + Textures.glyphTex.func_110623_a());
     }
     
     public void tickRegistry() {

@@ -41,10 +41,10 @@ public class AracoriaDimensionTraveler extends ItemSojourn
                     WorldServer worldServer1 = minecraftserver.worldServerForDimension(dimensionID);
                     if(dimID == dimensionID)
                     {
-                        minecraftserver.getConfigurationManager().transferEntityToWorld((EntityPlayerMP) player, 0, worldServer, worldServer1, new AracoriaTeleporter(worldServer));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, 0, new AracoriaTeleporter(worldServer));
                         
                     } else {
-                        minecraftserver.getConfigurationManager().transferEntityToWorld((EntityPlayerMP) player, dimensionID, worldServer1, worldServer, new AracoriaTeleporter(worldServer1));
+                        minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) player, dimensionID, new AracoriaTeleporter(worldServer1));
                         //par5Entity.travelToDimension(Atum.dimensionID);
                     }
                 }

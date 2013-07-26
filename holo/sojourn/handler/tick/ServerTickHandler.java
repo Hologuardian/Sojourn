@@ -7,6 +7,8 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -44,6 +46,7 @@ public class ServerTickHandler implements ITickHandler
         {
             EntityPlayerMP player = (EntityPlayerMP) players.next();
             EssenceBar.bars().updateBar(player, 2);
+
         }
         GroupManager.groups().update();
     }

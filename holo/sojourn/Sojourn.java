@@ -35,6 +35,7 @@ public class Sojourn
     {
         instance = this;
         proxy.configRegistry(event);
+        proxy.preInit(event);
     }
     
     @EventHandler

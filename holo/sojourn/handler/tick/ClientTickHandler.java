@@ -42,6 +42,8 @@ public class ClientTickHandler implements ITickHandler
                 playerGroup.renderIcons();
             }
             new EssenceBarIcon().renderIcon(player);
+
+        	player.capabilities.setFlySpeed(0.25F);
         }
     }
 

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import cpw.mods.fml.common.IPlayerTracker;
 
 public class GroupManager implements IPlayerTracker
