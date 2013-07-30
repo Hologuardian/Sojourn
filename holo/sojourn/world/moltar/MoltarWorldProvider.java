@@ -21,11 +21,8 @@ public class MoltarWorldProvider extends WorldProvider
         this.hasNoSky = true;
         
         type = new BaseWorldType(0, "Moltar");
-        for (BiomeGenBase biome : type.base12Biomes)
-        {
-            type.removeBiome(biome);
-            
-        }
+        type.removeAllBiomes();
+        
         type.addNewBiome(SojournDimensionRegistry.moltarValleyBiome);
         type.addNewBiome(SojournDimensionRegistry.moltarBiome);
         

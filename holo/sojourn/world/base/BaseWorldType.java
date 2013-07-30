@@ -59,6 +59,14 @@ public class BaseWorldType extends WorldType
         this.biomeSize = 4;
     }
     
+    public void removeAllBiomes()
+    {
+        for (BiomeGenBase biome : this.biomesForWorldType)
+        {
+            this.removeBiome(biome);
+        }
+    }
+    
     public void setWaterSnowHeight(int water, int snow)
     {
         this.waterHeight = water;
