@@ -1,8 +1,8 @@
 package holo.sojourn.world.moltar;
 
 import holo.sojourn.helper.SojournDimensionRegistry;
-import holo.sojourn.world.base.BaseChunkManager;
-import holo.sojourn.world.base.BaseWorldType;
+import holo.utils.world.BaseChunkManager;
+import holo.utils.world.BaseWorldType;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;

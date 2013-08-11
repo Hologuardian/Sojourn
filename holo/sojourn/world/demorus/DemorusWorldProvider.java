@@ -1,9 +1,9 @@
 package holo.sojourn.world.demorus;
 
 import holo.sojourn.helper.SojournDimensionRegistry;
-import holo.sojourn.world.base.BaseChunkManager;
-import holo.sojourn.world.base.BaseChunkProvider;
-import holo.sojourn.world.base.BaseWorldType;
+import holo.utils.world.BaseChunkManager;
+import holo.utils.world.BaseChunkProvider;
+import holo.utils.world.BaseWorldType;
 import net.minecraft.block.Block;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
