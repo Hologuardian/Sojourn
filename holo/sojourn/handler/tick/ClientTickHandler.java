@@ -16,15 +16,15 @@ public class ClientTickHandler implements ITickHandler
     public static final Minecraft mc = Minecraft.getMinecraft();
     
     @Override
-    public void tickStart(EnumSet var1, Object ... var2) 
+    public void tickStart(EnumSet tickType, Object ... args) 
     {
         onTickInGame();
     }
 
     @Override
-    public void tickEnd(EnumSet var1, Object ... mc)
+    public void tickEnd(EnumSet tickType, Object ... args)
     {
-        if (var1.equals(EnumSet.of(TickType.RENDER)))
+        if (tickType.equals(EnumSet.of(TickType.RENDER)))
         {
             onRenderTick();
         }
@@ -42,8 +42,6 @@ public class ClientTickHandler implements ITickHandler
                 playerGroup.renderIcons();
             }
             new EssenceBarIcon().renderIcon(player);
-
-        	player.capabilities.setFlySpeed(0.25F);
         }
     }
 

@@ -6,6 +6,7 @@ import holo.sojourn.group.GroupManager;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -16,12 +17,18 @@ import cpw.mods.fml.common.TickType;
 public class ServerTickHandler implements ITickHandler
 {
     @Override
-    public void tickStart(EnumSet var1, Object ... var2) {}
+    public void tickStart(EnumSet tickType, Object ... args) 
+    {
+    	if (tickType.equals(EnumSet.of(TickType.PLAYER)))
+        {
+        	onPlayerTick(args);
+        }
+    }
 
     @Override
-    public void tickEnd(EnumSet var1, Object ... var2)
+    public void tickEnd(EnumSet tickType, Object ... args)
     {
-        if (var1.equals(ticks()))
+        if (tickType.equals(ticks()))
         {
             onTickInGame();
         }
@@ -46,8 +53,13 @@ public class ServerTickHandler implements ITickHandler
         {
             EntityPlayerMP player = (EntityPlayerMP) players.next();
             EssenceBar.bars().updateBar(player, 2);
-
         }
         GroupManager.groups().update();
+    }
+
+    public void onPlayerTick(Object ... args)
+    {
+    	EntityPlayer player = (EntityPlayer) args[0];
+//    	player.capabilities.setFlySpeed(0.05F);
     }
 }

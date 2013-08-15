@@ -18,6 +18,7 @@ public class AracoriaDimensionTraveler extends ItemSojourn
     {
         super(par1, name);
         this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.setMaxStackSize(1);
     }
     
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer playerMP)

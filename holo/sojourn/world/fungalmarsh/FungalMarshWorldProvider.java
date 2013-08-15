@@ -27,12 +27,15 @@ public class FungalMarshWorldProvider extends WorldProvider
         type.addNewBiome(BiomeGenBase.extremeHills);
         type.addNewBiome(SojournDimensionRegistry.aracoriaBiome2);
         
+        type.addIslandBiome(BiomeGenBase.swampland, BiomeGenBase.desert, 7);
+        //Change rarity to higher and test for spawns then proceed to trying to get rivers working right
+        
         type.addBiomeTransition(BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.river);
         type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.jungle);
         type.addBiomeTransition(BiomeGenBase.swampland, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.frozenRiver);
         
         type.setWaterSnowHeight(121, 205);
-        type.setBiomeSize(1);
+        type.setBiomeSize(5);
         
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
 //        

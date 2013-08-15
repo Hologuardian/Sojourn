@@ -12,8 +12,8 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
 import holo.sojourn.helper.aquatan.AquatanBlocks;
 import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
-import holo.utils.world.HighCaveGen;
-import holo.utils.world.HighRavineGen;
+import holo.utils.world.feature.HighCaveGen;
+import holo.utils.world.feature.HighRavineGen;
 
 import java.util.Arrays;
 import java.util.List;
