@@ -82,4 +82,14 @@ public class AquatanWorldProvider extends WorldProvider
     {
         return "Aquatan";
     }
+    
+    /**
+     * Returns the sub-folder of the world folder that this WorldProvider saves to.
+     * EXA: DIM1, DIM-1
+     * @return The sub-folder name to save this world's chunks to.
+     */
+    public String getSaveFolder()
+    {
+        return getDimensionName();
+    }
 }

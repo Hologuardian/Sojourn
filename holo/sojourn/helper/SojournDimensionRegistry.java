@@ -10,6 +10,8 @@ import holo.sojourn.world.demorus.DemorusWorldProvider;
 import holo.sojourn.world.demorus.biome.DemorusBiome;
 import holo.sojourn.world.demorus.biome.DemorusBiome2;
 import holo.sojourn.world.demorus.biome.DemorusValleyBiome;
+import holo.sojourn.world.frigidpeaks.FrigidPeaksWorldProvider;
+import holo.sojourn.world.frigidpeaks.biome.FrigidPeaksBiome;
 import holo.sojourn.world.fungalmarsh.FungalMarshWorldProvider;
 import holo.sojourn.world.fungalmarsh.biome.FungalMarshBiome;
 import holo.sojourn.world.moltar.MoltarWorldProvider;
@@ -21,8 +23,10 @@ import net.minecraftforge.common.DimensionManager;
 public class SojournDimensionRegistry
 {
     public static BiomeGenBase aquatanBiome;
+    
     public static BiomeGenBase aracoriaBiome1;
     public static BiomeGenBase aracoriaBiome2;
+    
     public static BiomeGenBase fungalMarshBiome;
     
     public static BiomeGenBase moltarBiome;
@@ -32,11 +36,15 @@ public class SojournDimensionRegistry
     public static BiomeGenBase demorusBiome;
     public static BiomeGenBase demorusBiome2;
     
+    public static BiomeGenBase frigidPeaksBiome;
+    
     public static void initWorlds()
     {
         aquatanBiome = new AquatanBiome(DimensionConfig.aquatanBiomeID);
+        
         aracoriaBiome1 = new AracoriaBiome1(DimensionConfig.aracoriaBiomeID);
         aracoriaBiome2 = new AracoriaBiome2(DimensionConfig.aracoriaBiomeID - 1);
+        
         fungalMarshBiome = new FungalMarshBiome(DimensionConfig.fungalMarshBiomeID).setTemperatureRainfall(0.8F, 0.9F);
         
         moltarBiome = new MoltarBiome(DimensionConfig.moltarBiomeID);
@@ -45,6 +53,8 @@ public class SojournDimensionRegistry
         demorusValleyBiome = new DemorusValleyBiome(DimensionConfig.demorusValleyBiomeID);
         demorusBiome = new DemorusBiome(DimensionConfig.demorusBiomeID);
         demorusBiome2 = new DemorusBiome2(DimensionConfig.demorusBiome1ID);
+        
+        frigidPeaksBiome = new FrigidPeaksBiome(DimensionConfig.frigidPeaksBiomeID);
         
         DimensionManager.registerProviderType(DimensionConfig.aracoriaDimensionID, AracoriaWorldProvider.class, DimensionConfig.keepLoadedAracoria);
         DimensionManager.registerDimension(DimensionConfig.aracoriaDimensionID, DimensionConfig.aracoriaDimensionID);
@@ -60,5 +70,8 @@ public class SojournDimensionRegistry
 
         DimensionManager.registerProviderType(DimensionConfig.demorusDimensionID, DemorusWorldProvider.class, DimensionConfig.keepLoadedDemorus);
         DimensionManager.registerDimension(DimensionConfig.demorusDimensionID, DimensionConfig.demorusDimensionID);
+
+        DimensionManager.registerProviderType(DimensionConfig.frigidPeaksDimensionID, FrigidPeaksWorldProvider.class, DimensionConfig.keepLoadedFrigidPeaks);
+        DimensionManager.registerDimension(DimensionConfig.frigidPeaksDimensionID, DimensionConfig.frigidPeaksDimensionID);
     }
 }

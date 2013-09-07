@@ -1,16 +1,17 @@
-package holo.sojourn.world.moltar;
+package holo.sojourn.world.frigidpeaks;
 
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.utils.world.BaseChunkManager;
+import holo.utils.world.BaseChunkProvider;
 import holo.utils.world.BaseWorldType;
-import net.minecraft.util.MathHelper;
+import net.minecraft.block.Block;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MoltarWorldProvider extends WorldProvider
+public class FrigidPeaksWorldProvider extends WorldProvider
 {
     public BaseWorldType type;
     /**
@@ -18,40 +19,66 @@ public class MoltarWorldProvider extends WorldProvider
      */
     public void registerWorldChunkManager()
     {
-        this.hasNoSky = true;
+        type = new BaseWorldType(0, "Frigid Peaks");
+        for (BiomeGenBase biome : type.base12Biomes)
+        {
+            type.removeBiome(biome);
+        }
+        type.addNewBiome(SojournDimensionRegistry.frigidPeaksBiome);
         
-        type = new BaseWorldType(0, "Moltar");
-        type.removeAllBiomes();
-        
-        type.addNewBiome(SojournDimensionRegistry.moltarValleyBiome);
-        type.addNewBiome(SojournDimensionRegistry.moltarBiome);
-        
-        type.addBiomeTransition(SojournDimensionRegistry.moltarValleyBiome, SojournDimensionRegistry.moltarBiome, SojournDimensionRegistry.moltarValleyBiome);
-        
-        type.setWaterSnowHeight(152, 257);
-        type.setBiomeSize(1);
-        
+        type.setWaterSnowHeight(127, 256);
+        type.setBiomeSize(4);
+        type.setFillBlock(Block.blockSnow.blockID);
+        type.setRiverBiome(BiomeGenBase.river);
+        type.caveGen = null;
+        type.ravineGen = null;
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
-    }
 
-    /**
-     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
-     */
-    public float calculateCelestialAngle(long par1, float par3)
-    {
-        return -0.5F;
+        this.hasNoSky = true;
     }
     
     @SideOnly(Side.CLIENT)
 
     /**
-     * Returns a double value representing the Y value relative to the top of the map at which void fog is at its
-     * maximum. The default factor of 0.03125 relative to 256, for example, means the void fog will be at its maximum at
-     * (256*0.03125), or 8.
+     * Returns array with sunrise/sunset colors
      */
-    public double getVoidFogYFactor()
+    public float[] calcSunriseSunsetColors(float par1, float par2)
     {
-        return 0.03125;
+        return new float[]{0, 0, 0, 0};
+    }
+
+    /**
+     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+     */
+    public float calculateCelestialAngle(long par1, float par2)
+    {
+    	int j = (int)(par1 % 24000L);
+        float f1 = ((float)j + par2) / 24000.0F - 0.25F;
+
+        if (f1 < 0.0F)
+        {
+            ++f1;
+        }
+
+        if (f1 > 1.0F)
+        {
+            --f1;
+        }
+
+        float f2 = f1;
+        f1 = 1.0F - (float)((Math.cos((double)f1 * Math.PI) + 1.0D) / 2.0D);
+        f1 = ((f2 + (f1 - f2) / 3.0F) / 2.5F) + 0.3F;
+        return f1;
+    }
+    
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * the y level at which clouds are rendered.
+     */
+    public float getCloudHeight()
+    {
+        return 192.0F;
     }
 
     /**
@@ -59,7 +86,7 @@ public class MoltarWorldProvider extends WorldProvider
      */
     public IChunkProvider createChunkGenerator()
     {
-        return new MoltarChunkProvider(this.worldObj, this.worldObj.getSeed(), false, type);
+        return new BaseChunkProvider(this.worldObj, this.worldObj.getSeed(), false, type);
     }
 
     /**
@@ -67,7 +94,7 @@ public class MoltarWorldProvider extends WorldProvider
      */
     public boolean isSurfaceWorld()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -91,8 +118,8 @@ public class MoltarWorldProvider extends WorldProvider
      */
     public String getDimensionName()
     {
-        return "Moltar";
-    }
+        return "Frigid Peaks";
+    } 
     
     /**
      * Returns the sub-folder of the world folder that this WorldProvider saves to.

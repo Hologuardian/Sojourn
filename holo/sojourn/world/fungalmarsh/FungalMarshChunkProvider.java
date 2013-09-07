@@ -10,6 +10,7 @@ import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.Ev
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA;
+import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.world.aracoria.features.AracoriaCaveGen;
 import holo.utils.world.feature.HighCaveGen;
 import holo.utils.world.feature.HighRavineGen;
@@ -245,6 +246,10 @@ public class FungalMarshChunkProvider implements IChunkProvider
             for (int l = 0; l < 16; ++l)
             {
                 BiomeGenBase biomegenbase = par4ArrayOfBiomeGenBase[l + k * 16];
+//                if(biomegenbase.biomeID == SojournDimensionRegistry.aquatanBiome.biomeID)
+//                	b0 = 210;
+//                else
+//                	b0 = 118;
                 float f = biomegenbase.getFloatTemperature();
                 int i1 = (int)(this.stoneNoise[k + l * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int j1 = -1;

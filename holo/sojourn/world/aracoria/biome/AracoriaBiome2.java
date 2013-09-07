@@ -9,8 +9,8 @@ public class AracoriaBiome2 extends BiomeGenBase
     {
         super(par1);
         this.setBiomeName("Aracoria2");
-        this.minHeight = 2.8F;
-        this.maxHeight = 2.8F;
+        this.minHeight = 3.8F;
+        this.maxHeight = 0.0F;
         this.theBiomeDecorator.treesPerChunk = 0;
         this.theBiomeDecorator.grassPerChunk = 0;
         this.theBiomeDecorator.flowersPerChunk = 0;

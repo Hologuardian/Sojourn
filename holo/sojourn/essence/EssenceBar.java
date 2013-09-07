@@ -50,7 +50,7 @@ public class EssenceBar implements IPlayerTracker
             System.out.println("Had no player");
         }
         
-        return ratios.get(player.username)[essence] * 105;
+        return ratios.get(player.username)[essence] * 100;
     }
 
     public void addScaledEssence(EntityPlayer player, int essence, float amount)

@@ -18,13 +18,13 @@ public class ClientTickHandler implements ITickHandler
     @Override
     public void tickStart(EnumSet tickType, Object ... args) 
     {
-        onTickInGame();
+    	
     }
 
     @Override
     public void tickEnd(EnumSet tickType, Object ... args)
     {
-        if (tickType.equals(EnumSet.of(TickType.RENDER)))
+    	if (tickType.equals(EnumSet.of(TickType.RENDER)))
         {
             onRenderTick();
         }
@@ -38,7 +38,6 @@ public class ClientTickHandler implements ITickHandler
             Group playerGroup = GroupManager.groups().getGroupFromPlayer(player.username);
             if (playerGroup != null)
             {
-//                System.out.println(player.username);
                 playerGroup.renderIcons();
             }
             new EssenceBarIcon().renderIcon(player);
@@ -55,9 +54,5 @@ public class ClientTickHandler implements ITickHandler
     public String getLabel()
     {
         return "Sojourn Client Tick Handler";
-    }
-
-    public void onTickInGame()
-    {
     }
 }

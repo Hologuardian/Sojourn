@@ -21,21 +21,22 @@ public class FungalMarshWorldProvider extends WorldProvider
         type = new BaseWorldType(0, "FungalMarsh");
         for (BiomeGenBase biome : type.base12Biomes)
         {
-            type.removeBiome(biome);
+        	type.removeBiome(biome);
         }
-        type.addNewBiome(BiomeGenBase.swampland);
+	    
         type.addNewBiome(BiomeGenBase.extremeHills);
-        type.addNewBiome(SojournDimensionRegistry.aracoriaBiome2);
+        type.addNewBiome(SojournDimensionRegistry.fungalMarshBiome);
+        type.addNewBiome(SojournDimensionRegistry.aquatanBiome);
         
-        type.addIslandBiome(BiomeGenBase.swampland, BiomeGenBase.desert, 7);
+//        type.addIslandBiome(SojournDimensionRegistry.aquatanBiome, BiomeGenBase.desert, 7);
         //Change rarity to higher and test for spawns then proceed to trying to get rivers working right
         
-        type.addBiomeTransition(BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.river);
-        type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.jungle);
-        type.addBiomeTransition(BiomeGenBase.swampland, SojournDimensionRegistry.aracoriaBiome2, BiomeGenBase.frozenRiver);
+        type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.aquatanBiome, SojournDimensionRegistry.aracoriaBiome2);
+        type.addBiomeTransition(BiomeGenBase.extremeHills, SojournDimensionRegistry.fungalMarshBiome, BiomeGenBase.jungle);
+        type.addBiomeTransition(SojournDimensionRegistry.aquatanBiome, SojournDimensionRegistry.fungalMarshBiome, SojournDimensionRegistry.aracoriaBiome2);
         
-        type.setWaterSnowHeight(121, 205);
-        type.setBiomeSize(5);
+        type.setWaterSnowHeight(63, 205);
+        type.setBiomeSize(2);
         
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
 //        
@@ -92,5 +93,15 @@ public class FungalMarshWorldProvider extends WorldProvider
     public String getDimensionName()
     {
         return "Fungal Marsh";
+    }
+    
+    /**
+     * Returns the sub-folder of the world folder that this WorldProvider saves to.
+     * EXA: DIM1, DIM-1
+     * @return The sub-folder name to save this world's chunks to.
+     */
+    public String getSaveFolder()
+    {
+        return getDimensionName();
     }
 }

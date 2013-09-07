@@ -20,6 +20,6 @@ public class AquatanBiome extends BiomeGenBase
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
-        this.theBiomeDecorator = new AquatanBiomeDecorator(this);
+//        this.theBiomeDecorator = new AquatanBiomeDecorator(this);
     }
 }

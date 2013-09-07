@@ -20,21 +20,17 @@ public class EssenceBarIcon extends Gui
     
     public void renderIcon(EntityPlayer player)
     {
-        GL11.glEnable(GL11.GL_BLEND);
-        
-        if (EssenceBar.bars().hasPlayer(player))
+        if (EssenceBar.bars().hasPlayer(player) && mc.currentScreen == null)
         {
             ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
             int k = scaledresolution.getScaledWidth();
             int l = scaledresolution.getScaledHeight();
-            renderBar(player, k - 5, l - 3, 1F, EssenceBar.bars().getScaledEssences(player));
+            renderBar(player, k - 5, l, 1F, EssenceBar.bars().getScaledEssences(player));
         }
     }
     
     public void renderIcon(EntityPlayer player, int x, int y, float scale)
     {
-        GL11.glEnable(GL11.GL_BLEND);
-        
         if (EssenceBar.bars().hasPlayer(player))
         {
             renderBar(player, x, y, scale, EssenceBar.bars().getScaledEssences(player));
@@ -43,46 +39,31 @@ public class EssenceBarIcon extends Gui
     
     public void renderBar(EntityPlayer player, int posX, int posY, float scale, float[] essences)
     {
-        GL11.glEnable(GL11.GL_BLEND);
 
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
         this.mc.func_110434_K().func_110577_a(Textures.essenceBar);
         
         int x = posX;
-        int x1;
-        int y = posY - 16;
-        int y1 = 16;
+        int x1 = 0;
+        int y = posY - 22;
+        int h = 22;
         int u = 256;
+
+        this.drawTexturedModalRect(x, y, 0, 0, 3, h);
         for (int i = 4; i >= 0; i--)
         {
             float val = essences[i];
             x1 = (int) (val);
             x -= x1;
             u -= x1;
-            this.drawTexturedModalRect(x, y, u, 16 * (4 - i), x1, y1);
+            this.drawTexturedModalRect(x, y, u, h * (4 - i), x1, h);
         }
+        x -= 3;
+        this.drawTexturedModalRect(x, y, 3, 0, 3, h);
         
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
-    }
-    
-    public int essenceColor(int essence)
-    {
-        switch (essence)
-        {
-            case 0:
-                return 16777216;
-            case 1:
-                return 16777216;
-            case 2:
-                return 16777216;
-            case 3:
-                return 16777216;
-            case 4:
-                return 16777216;
-        }
-        
-        return 0;
     }
 }
