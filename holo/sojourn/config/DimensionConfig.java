@@ -11,6 +11,7 @@ public class DimensionConfig
     public static boolean keepLoadedMoltar;
     public static boolean keepLoadedDemorus;
     public static boolean keepLoadedFrigidPeaks;
+    public static boolean keepLoadedPythican;
     
     public static int aracoriaBiomeID;
     public static int aquatanBiomeID;
@@ -25,12 +26,23 @@ public class DimensionConfig
 
     public static int frigidPeaksBiomeID;
     
+    public static int pythicanBiomeID;
+    
     public static int aracoriaDimensionID;
     public static int aquatanDimensionID;
     public static int fungalMarshDimensionID;
     public static int moltarDimensionID;
     public static int demorusDimensionID;
     public static int frigidPeaksDimensionID;
+    public static int pythicanDimensionID;
+
+    public static int aracoriaTypeID;
+    public static int aquatanTypeID;
+    public static int fungalMarshTypeID;
+    public static int moltarTypeID;
+    public static int demorusTypeID;
+    public static int frigidPeaksTypeID;
+    public static int pythicanTypeID;
     
     public static void initDimensionsConfig(FMLPreInitializationEvent event, Configuration config)
     {
@@ -40,6 +52,7 @@ public class DimensionConfig
         keepLoadedMoltar = config.get("Dimensions", "Keep Moltar Loaded", true).getBoolean(true);
         keepLoadedDemorus = config.get("Dimensions", "Keep Demorus Loaded", true).getBoolean(true);
         keepLoadedFrigidPeaks = config.get("Dimensions", "Keep Frigid Peaks Loaded", true).getBoolean(true);
+        keepLoadedPythican = config.get("Dimensions", "Keep Pythican Jungle Loaded", true).getBoolean(true);
         
         aracoriaBiomeID = config.get("Dimensions", "Aracoria Biome ID", 50).getInt();
         
@@ -55,7 +68,8 @@ public class DimensionConfig
         demorusBiome1ID = config.get("Dimensions", "Demorus Biome 2 ID", 57).getInt();
 
         frigidPeaksBiomeID = config.get("Dimensions", "Frigid Peaks Biome ID", 58).getInt();
-        
+
+        pythicanBiomeID = config.get("Dimensions", "Pythican Jungle Biome ID", 59).getInt();
 
         aracoriaDimensionID = config.get("Dimensions", "Aracoria Dimension ID", 30).getInt();
         aquatanDimensionID = config.get("Dimensions", "Aquatan Dimension ID", 31).getInt();
@@ -63,6 +77,15 @@ public class DimensionConfig
         moltarDimensionID = config.get("Dimensions", "Moltar Dimension ID", 33).getInt();
         demorusDimensionID = config.get("Dimensions", "Demorus Dimension ID", 34).getInt();
         frigidPeaksDimensionID = config.get("Dimensions", "Frigid Peaks Dimension ID", 35).getInt();
+        pythicanDimensionID = config.get("Dimensions", "Pythican Jungle Dimension ID", 36).getInt();
+
+        aracoriaTypeID = config.get("Dimensions", "Aracoria World Type ID", 30).getInt();
+        aquatanTypeID = config.get("Dimensions", "Aquatan World Type ID", 31).getInt();
+        fungalMarshTypeID = config.get("Dimensions", "Fungal Marsh World Type ID", 32).getInt();
+        moltarTypeID = config.get("Dimensions", "Moltar World Type ID", 33).getInt();
+        demorusTypeID = config.get("Dimensions", "Demorus World Type ID", 34).getInt();
+        frigidPeaksTypeID = config.get("Dimensions", "Frigid Peaks World Type ID", 35).getInt();
+        pythicanTypeID = config.get("Dimensions", "Pythican Jungle World Type ID", 36).getInt();
         
     }
 }

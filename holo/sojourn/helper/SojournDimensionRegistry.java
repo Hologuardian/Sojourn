@@ -17,6 +17,8 @@ import holo.sojourn.world.fungalmarsh.biome.FungalMarshBiome;
 import holo.sojourn.world.moltar.MoltarWorldProvider;
 import holo.sojourn.world.moltar.biome.MoltarBiome;
 import holo.sojourn.world.moltar.biome.MoltarValleyBiome;
+import holo.sojourn.world.pythican.PythicanWorldProvider;
+import holo.sojourn.world.pythican.biome.PythicanBiome;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 
@@ -37,6 +39,8 @@ public class SojournDimensionRegistry
     public static BiomeGenBase demorusBiome2;
     
     public static BiomeGenBase frigidPeaksBiome;
+
+    public static BiomeGenBase pythicanBiome;
     
     public static void initWorlds()
     {
@@ -55,6 +59,8 @@ public class SojournDimensionRegistry
         demorusBiome2 = new DemorusBiome2(DimensionConfig.demorusBiome1ID);
         
         frigidPeaksBiome = new FrigidPeaksBiome(DimensionConfig.frigidPeaksBiomeID);
+
+        pythicanBiome = new PythicanBiome(DimensionConfig.pythicanBiomeID);
         
         DimensionManager.registerProviderType(DimensionConfig.aracoriaDimensionID, AracoriaWorldProvider.class, DimensionConfig.keepLoadedAracoria);
         DimensionManager.registerDimension(DimensionConfig.aracoriaDimensionID, DimensionConfig.aracoriaDimensionID);
@@ -73,5 +79,8 @@ public class SojournDimensionRegistry
 
         DimensionManager.registerProviderType(DimensionConfig.frigidPeaksDimensionID, FrigidPeaksWorldProvider.class, DimensionConfig.keepLoadedFrigidPeaks);
         DimensionManager.registerDimension(DimensionConfig.frigidPeaksDimensionID, DimensionConfig.frigidPeaksDimensionID);
+        
+        DimensionManager.registerProviderType(DimensionConfig.pythicanDimensionID, PythicanWorldProvider.class, DimensionConfig.keepLoadedPythican);
+        DimensionManager.registerDimension(DimensionConfig.pythicanDimensionID, DimensionConfig.pythicanDimensionID);
     }
 }
