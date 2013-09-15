@@ -31,7 +31,7 @@ public class PythicanWorldProvider extends WorldProvider
         }
         type.addNewBiome(SojournDimensionRegistry.pythicanBiome);
         
-        type.setWaterSnowHeight(34, 256);
+        type.setWaterSnowHeight(0, 256);
         type.setBiomeSize(4);
         type.setFillBlock(Block.dirt.blockID);
         

@@ -12,11 +12,13 @@ import net.minecraft.world.gen.structure.StructureStart;
 
 public class MapGenMassiveCanopyTree extends BaseMapGen
 {
-	private static final float baseVillageRadius = 60;
+	private static final float villageRadius = 80;
+	private static final int platformRadius = 20;
 	private static final int spiralWidth = 5;
-	private static final int villageRarity = 5;
-	private static final int spiralHeight = 10;
-	private static final int villageHeight = 10;
+	private static final int walkwayWidth = 3;
+	private static final int villageRarity = 7;
+	private static final int spiralHeight = 15;
+	private static final int villageHeight = 20;
 	private Map<Long, Boolean> treeMap = new HashMap<Long, Boolean>();
 	int treeNumber = 0;
 	int spacing;
@@ -143,31 +145,6 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 		return h - (x * x + z * z) / div;
 	}
 
-	public void genVillage(World world, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int r)
-	{
-		int cX = centerX * 16 + 8;
-		int cZ = centerZ * 16 + 8;
-
-		for(float i = x; i < x + 16; ++i)
-		{
-			for(float j = y; j <= y && y < 256; ++j)
-			{
-				for(float k = z; k < z + 16; ++k)
-				{
-					int key = hashCoord((int)(i - x), (int)j, (int)(k - z));
-					float bx = (i - cX);
-					float by = (j - y);
-					float bz = (k - cZ);
-					
-					if (bx * bx + bz * bz <= (r * r) && (bx * bx + bz * bz >= (10 + spiralWidth) * (10 + spiralWidth)) && key < 65536)
-					{
-						shortArray[key] = (short) Block.planks.blockID;
-					}
-				}
-			}
-		}
-	}
-
 	@Override
 	protected void recursiveGenerate(World world, int chunkX, int chunkZ, int centerX, int centerZ, short[] shortArray) 
 	{
@@ -200,12 +177,42 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 		generateTrunk(seed, centerX, centerZ, shortArray, x, y, z, (int)(baseRadius * rDiv), (int)(baseHeight * hDiv), village);
 		generateCanopy(seed, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv), z, (int)(baseCanopyRadius * rDiv), (int)(baseCanopyHeight * hDiv));
 		if(village)
-			genVillage(world, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv) - villageHeight, z, (int)(baseVillageRadius * rDiv));
+			genVillage(world, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv) - villageHeight, z, (int)(villageRadius * rDiv));
 	}
 
 	@Override
 	public boolean shouldGenerate(int centerX, int centerZ) 
 	{
 		return true;
+	}
+
+	public void genVillage(World world, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int r)
+	{
+		int cX = centerX * 16 + 8;
+		int cZ = centerZ * 16 + 8;
+
+		for(float i = x; i < x + 16; ++i)
+		{
+			for(float j = y; j <= y && y < 256; ++j)
+			{
+				for(float k = z; k < z + 16; ++k)
+				{
+					int key = hashCoord((int)(i - x), (int)j, (int)(k - z));
+					float bx = (i - cX);
+					float by = (j - y);
+					float bz = (k - cZ);
+					
+					if (bx * bx + bz * bz <= (platformRadius * platformRadius) && (bx * bx + bz * bz >= (9 + spiralWidth) * (9 + spiralWidth)) && key < 65536)
+					{
+						shortArray[key] = (short) Block.planks.blockID;
+					}
+				}
+			}
+		}
+	}
+	
+	public void genPlatform(World world, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int r, int pX, int pY, int pZ)
+	{
+		
 	}
 }
