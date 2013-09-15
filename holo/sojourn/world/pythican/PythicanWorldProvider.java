@@ -1,7 +1,9 @@
 package holo.sojourn.world.pythican;
 
+import holo.sojourn.config.DimensionConfig;
 import holo.sojourn.helper.SojournDimensionRegistry;
 import holo.sojourn.world.pythican.feature.MapGenMassiveCanopyTree;
+import holo.sojourn.world.pythican.feature.WorldGenLargeTree;
 import holo.utils.world.BaseChunkManager;
 import holo.utils.world.BaseChunkProvider;
 import holo.utils.world.BaseWorldType;
@@ -22,7 +24,7 @@ public class PythicanWorldProvider extends WorldProvider
      */
     public void registerWorldChunkManager()
     {
-        type = new BaseWorldType(0, "Pythican Jungle");
+        type = new BaseWorldType(DimensionConfig.pythicanTypeID, "Pythican Jungle");
         for (BiomeGenBase biome : type.base12Biomes)
         {
             type.removeBiome(biome);
@@ -37,6 +39,7 @@ public class PythicanWorldProvider extends WorldProvider
         type.ravineGen = null;
         
         type.addMapGenFeature(new MapGenMassiveCanopyTree(2, 3, 165, 9, 120, 32));
+        type.addGlobalFeature(new WorldGenLargeTree(), 0.125F);
         
         this.worldChunkMgr = new BaseChunkManager(this.worldObj.getSeed(), type);
     }

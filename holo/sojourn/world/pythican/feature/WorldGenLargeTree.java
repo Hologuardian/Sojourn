@@ -1,12 +1,14 @@
 package holo.sojourn.world.pythican.feature;
 
+import holo.utils.world.feature.BaseWorldGenerator;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-public class WorldGenLargeTree extends WorldGenerator
+public class WorldGenLargeTree extends BaseWorldGenerator
 {
 	public void generateTrunk(World world, Random rand, int x, int y, int z, int radius, int height)
 	{
@@ -28,34 +30,23 @@ public class WorldGenLargeTree extends WorldGenerator
 
 	public void generateCanopy(World world, Random rand, int x, int y, int z, int radius, int height)
 	{
-		float uDiv = (radius * radius) / (height * 2);
-		float lDiv = (radius * radius) / height;
-		boolean vineFlag = false;
+		float uDiv = (radius * radius) / (height / 2);
+		float lDiv = (radius * radius) / (height / 2);
 		int groundHeight = 35;
-
+		
 		for(int i = x - radius; i < x + radius; ++i)
 		{
 			for(float k = z - radius; k < z + radius; ++k)
 			{
-				if(rand.nextInt(50) == 0)
-					vineFlag = true;
-				else
-					vineFlag = false;
 				
-				for(float j = y + height; j >= 0 && y < 256; --j)
+				for(float j = y + height; j >= 0 && j < 256; --j)
 				{
 					float bx = (i - x);
-					float bz = (k - y);
-					float by = (j - z);
+					float by = (j - y);
+					float bz = (k - z);
 					if (inCanopy(bx, by, bz, radius, height, lDiv, uDiv))
 					{
-//						this.setBlockAndMetadata(world, (int)i, (int)j, (int)k, Block.leaves.blockID, 4);
-					}
-					
-					if(vineFlag && by <= lowerCanopyY(bx, by, bz, radius, height, lDiv) &&  j > groundHeight + 10
-							&& bx * bx + bz * bz <= radius * radius - 25)
-					{
-//						this.setBlockAndMetadata(world, (int)i, (int)j, (int)k, Block.leaves.blockID, 4);
+						this.setBlockAndMetadata(world, (int)i, (int)j, (int)k, Block.leaves.blockID, 4);
 					}
 				}
 			}
@@ -71,7 +62,7 @@ public class WorldGenLargeTree extends WorldGenerator
 
 	public float lowerCanopyY(float x, float y, float z, float r, float h, float div)
 	{
-		return -(x * x + z * z) / div;
+		return (x * x + z * z) / div;
 	}
 
 	public float upperCanopyY(float x, float y, float z, float r, float h, float div)
@@ -85,7 +76,13 @@ public class WorldGenLargeTree extends WorldGenerator
 		float scale = (rand.nextFloat() * 0.5F + 1.0F);
 		int height = (int)((30 + rand.nextInt(10)) * scale);
 		this.generateTrunk(world, rand, x, y, z, (int)(3 * scale), height);
-		this.generateCanopy(world, rand, x, y + height, z, (int)((30 + rand.nextInt(15)) * scale), (int)((10 + rand.nextInt(5)) * scale));
+		this.generateCanopy(world, rand, x, y + height, z, (int)((30 + rand.nextInt(15)) ), (int)((10 + rand.nextInt(5)) ));
 		return true;
+	}
+
+	@Override
+	public int getYPosition(World world, Random rand, int x, int z) 
+	{
+		return 30;
 	}
 }

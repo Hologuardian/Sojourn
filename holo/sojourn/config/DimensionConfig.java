@@ -79,13 +79,13 @@ public class DimensionConfig
         frigidPeaksDimensionID = config.get("Dimensions", "Frigid Peaks Dimension ID", 35).getInt();
         pythicanDimensionID = config.get("Dimensions", "Pythican Jungle Dimension ID", 36).getInt();
 
-        aracoriaTypeID = config.get("Dimensions", "Aracoria World Type ID", 30).getInt();
-        aquatanTypeID = config.get("Dimensions", "Aquatan World Type ID", 31).getInt();
-        fungalMarshTypeID = config.get("Dimensions", "Fungal Marsh World Type ID", 32).getInt();
-        moltarTypeID = config.get("Dimensions", "Moltar World Type ID", 33).getInt();
-        demorusTypeID = config.get("Dimensions", "Demorus World Type ID", 34).getInt();
-        frigidPeaksTypeID = config.get("Dimensions", "Frigid Peaks World Type ID", 35).getInt();
-        pythicanTypeID = config.get("Dimensions", "Pythican Jungle World Type ID", 36).getInt();
+        aracoriaTypeID = config.get("Dimensions", "Aracoria World Type ID", 12).getInt();
+        aquatanTypeID = config.get("Dimensions", "Aquatan World Type ID", 12).getInt();
+        fungalMarshTypeID = config.get("Dimensions", "Fungal Marsh World Type ID", 12).getInt();
+        moltarTypeID = config.get("Dimensions", "Moltar World Type ID", 12).getInt();
+        demorusTypeID = config.get("Dimensions", "Demorus World Type ID", 12).getInt();
+        frigidPeaksTypeID = config.get("Dimensions", "Frigid Peaks World Type ID", 12).getInt();
+        pythicanTypeID = config.get("Dimensions", "Pythican Jungle World Type ID", 3).getInt();
         
     }
 }

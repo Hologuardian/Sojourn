@@ -12,7 +12,13 @@ import net.minecraft.world.gen.structure.StructureStart;
 
 public class MapGenMassiveCanopyTree extends BaseMapGen
 {
-	private Map treeMap = new HashMap<Long, Integer>();
+	private static final float baseVillageRadius = 60;
+	private static final int spiralWidth = 5;
+	private static final int villageRarity = 5;
+	private static final int spiralHeight = 10;
+	private static final int villageHeight = 10;
+	private Map<Long, Boolean> treeMap = new HashMap<Long, Boolean>();
+	int treeNumber = 0;
 	int spacing;
 	int chance = 1;
 	int baseHeight;
@@ -34,28 +40,52 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 		range = baseCanopyRadius / 16 + 1;
 	}
 
-	public void generateTrunk(long seed, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int radius, int height)
+	public void generateTrunk(long seed, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int r, int h, boolean village)
 	{
 		int cX = centerX * 16 + 8;
 		int cZ = centerZ * 16 + 8;
 
 		for(float i = x; i < x + 16; ++i)
 		{
-			for(float j = y; j <= y + height && y < 256; ++j)
+			for(float j = y; j <= y + h && y < 256; ++j)
 			{
 				for(float k = z; k < z + 16; ++k)
 				{
 					int key = hashCoord((int)(i - x), (int)j, (int)(k - z));
-					float y1 = height - (j - y) - rand.nextInt(radius/2);
-					if ((i - cX) * (i - cX) + (k - cZ) * (k - cZ) <= (radius * radius + y1) && key < 65536)
+					float y1 = h - (j - y) - rand.nextInt(r/2);
+					float bx = (i - cX);
+					float by = (j - y);
+					float bz = (k - cZ);
+					
+					if (bx * bx + bz * bz <= (r * r + y1) && key < 65536)
 					{
 						shortArray[key] = (short) Block.wood.blockID;
+					}
+					else if(village && by < h - villageHeight && (bx * bx + bz * bz <= (r + spiralWidth) * (r + spiralWidth) + y1 && key < 65536 && inSpiral(bx, by, bz)))
+					{
+						shortArray[key] = (short) Block.planks.blockID;
 					}
 				}
 			}
 		}
 	}
-
+	
+	public boolean inSpiral(float x, float y, float z)
+	{
+		double theta = Math.atan2(z, x);
+		if(theta < 0)
+			theta = Math.PI * 2 + theta;
+		
+		if(fastFloor((theta / (Math.PI * 2)) * spiralHeight) == (y % spiralHeight))
+			return true;
+		return false;
+	}
+	
+	public int fastFloor(double x)
+	{
+		return (int) x >= 0 ? (int) x : (int)(x - 1);
+	}
+	
 	public void generateCanopy(long seed, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int radius, int height)
 	{
 		int cX = centerX * 16 + 8;
@@ -75,12 +105,12 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 				
 				int groundHeight = getTopSolidOrLiquidBlock((int)(i - x), (int)(k - z), shortArray);
 				
-				for(float j = y + height; j >= 0 && y < 256; --j)
+				for(float j = y + height; j >= 0 && j < 256; --j)
 				{
 					int key = hashCoord((int)(i - x), (int)j, (int)(k - z));
 					float bx = (i - cX);
-					float bz = (k - cZ);
 					float by = (j - y);
+					float bz = (k - cZ);
 					if (inCanopy(bx, by, bz, radius, height, lDiv, uDiv) && key < 65536)
 					{
 						shortArray[key] = (short) Block.leaves.blockID;
@@ -113,6 +143,31 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 		return h - (x * x + z * z) / div;
 	}
 
+	public void genVillage(World world, int centerX, int centerZ, short[] shortArray, int x, int y, int z, int r)
+	{
+		int cX = centerX * 16 + 8;
+		int cZ = centerZ * 16 + 8;
+
+		for(float i = x; i < x + 16; ++i)
+		{
+			for(float j = y; j <= y && y < 256; ++j)
+			{
+				for(float k = z; k < z + 16; ++k)
+				{
+					int key = hashCoord((int)(i - x), (int)j, (int)(k - z));
+					float bx = (i - cX);
+					float by = (j - y);
+					float bz = (k - cZ);
+					
+					if (bx * bx + bz * bz <= (r * r) && (bx * bx + bz * bz >= (10 + spiralWidth) * (10 + spiralWidth)) && key < 65536)
+					{
+						shortArray[key] = (short) Block.planks.blockID;
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	protected void recursiveGenerate(World world, int chunkX, int chunkZ, int centerX, int centerZ, short[] shortArray) 
 	{
@@ -123,23 +178,29 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 		{
 			if(chunkX % (this.range + rand.nextInt(chance * 2) - chance) == 0 && chunkZ % (this.range + rand.nextInt(chance * 2) - chance) == 0)
 			{
-				this.treeMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)), y);
-				this.generateTree(world, Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(centerX, centerZ)), chunkX, chunkZ, shortArray, x, (int)this.treeMap.get(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ))), z);
+				boolean genVillage = false;
+				if(treeNumber % villageRarity == 0)
+					genVillage = true;
+				++treeNumber;
+				this.treeMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)), genVillage);
+				this.generateTree(world, Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(centerX, centerZ)), chunkX, chunkZ, shortArray, x, y, z, this.treeMap.get(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ))));
 			}
 		}
 		else
 		{
-			this.generateTree(world, Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(centerX, centerZ)), chunkX, chunkZ, shortArray, x, (int)this.treeMap.get(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ))), z);
+			this.generateTree(world, Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(centerX, centerZ)), chunkX, chunkZ, shortArray, x, y, z, this.treeMap.get(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ))));
 		}
 	}
 
-	public void generateTree(World world, long seed, int centerX, int centerZ, short[] shortArray, int x, int y, int z)
+	public void generateTree(World world, long seed, int centerX, int centerZ, short[] shortArray, int x, int y, int z, boolean village)
 	{
 		float rDiv = (rand.nextFloat() * 0.05F + 1.0F);
 		float hDiv = (rand.nextFloat() * 0.05F + 1.0F);
 		
-		this.generateTrunk(seed, centerX, centerZ, shortArray, x, y, z, (int)(baseRadius * rDiv), (int)(baseHeight * hDiv));
-		this.generateCanopy(seed, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv), z, (int)(baseCanopyRadius * rDiv), (int)(baseCanopyHeight * hDiv));
+		generateTrunk(seed, centerX, centerZ, shortArray, x, y, z, (int)(baseRadius * rDiv), (int)(baseHeight * hDiv), village);
+		generateCanopy(seed, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv), z, (int)(baseCanopyRadius * rDiv), (int)(baseCanopyHeight * hDiv));
+		if(village)
+			genVillage(world, centerX, centerZ, shortArray, x, y + (int)(baseHeight * hDiv) - villageHeight, z, (int)(baseVillageRadius * rDiv));
 	}
 
 	@Override
