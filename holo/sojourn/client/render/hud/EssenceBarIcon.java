@@ -25,7 +25,7 @@ public class EssenceBarIcon extends Gui
             ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
             int k = scaledresolution.getScaledWidth();
             int l = scaledresolution.getScaledHeight();
-            renderBar(player, k, l, 1F, EssenceBar.bars().getScaledEssences(player));
+            renderBar(player, k - 2, l, 1F, EssenceBar.bars().getScaledEssences(player));
         }
     }
     

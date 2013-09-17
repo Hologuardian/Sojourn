@@ -27,7 +27,7 @@ public class AracoriaDimensionTraveler extends ItemSojourn
         {
             if(playerMP instanceof EntityPlayerMP)
             {
-                int dimensionID = DimensionConfig.pythicanDimensionID;
+                int dimensionID = DimensionConfig.aracoriaDimensionID;
                 EntityPlayerMP player = (EntityPlayerMP) playerMP;
                 //par5Entity.setInPortal();
                 //if(par5Entity.getPortalCooldown() == 0)

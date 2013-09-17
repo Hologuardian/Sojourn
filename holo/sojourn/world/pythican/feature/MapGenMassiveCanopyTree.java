@@ -243,14 +243,14 @@ public class MapGenMassiveCanopyTree extends BaseMapGen
 							float abz = Math.abs(bz);
 							if(abz <= 1)
 							{
-								if(abx >= platformRadius && (bx <= (platformRadius + resR + resDist)) && (bx >= -(platformRadius + industrialR + indDist)))
+								if(abx >= platformRadius && (bx <= (platformRadius + resDist)) && (bx >= -(platformRadius + indDist)))
 								{
 									shortArray[key] = (short) Block.planks.blockID; // residential and industrial walkways
 								}
 							}
 							else if(abx <= 1)
 							{
-								if(abz >= platformRadius && (bz <= (platformRadius + marketR + mDist)) && (bz >= -(platformRadius + farmR + fDist)))
+								if(abz >= platformRadius && (bz <= (platformRadius + mDist)) && (bz >= -(platformRadius + fDist)))
 								{
 									shortArray[key] = (short) Block.planks.blockID; // market and farm walkways
 								}
