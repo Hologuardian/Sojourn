@@ -28,7 +28,7 @@ public class CommandJoinGroup extends CommandBase
         if (GroupManager.groups().doesGroupExist(args[0]))
         {
             EntityPlayerMP player =(EntityPlayerMP)(p);
-            EntityPlayerMP host = func_82359_c(p, args[0]);
+            EntityPlayerMP host = getPlayer(p, args[0]);
             if (GroupManager.groups().getGroupFromPlayer(host.username) != null)
                 GroupManager.groups().getGroupFromPlayer(host.username).addPlayer(player.username);
         }

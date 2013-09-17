@@ -53,7 +53,7 @@ public class GroupIcon extends Gui
             }
 
 //            mc.renderEngine.bindTexture("/gui/inventory.png");
-            mc.func_110434_K().func_110577_a(Textures.playerInventory);
+            mc.getTextureManager().bindTexture(Textures.playerInventory);
             int j = 0;      
 
 //            System.out.println(p.username + " " + i + " " + j + " " + p.getActivePotionEffects().toString());
@@ -135,7 +135,7 @@ public class GroupIcon extends Gui
         int j3;
         int k3;
 
-        this.mc.func_110434_K().func_110577_a(Gui.field_110324_m);
+        this.mc.getTextureManager().bindTexture(Gui.icons);
         flag1 = player.hurtResistantTime / 3 % 2 == 1;
 
         if (player.hurtResistantTime < 10)
@@ -143,7 +143,7 @@ public class GroupIcon extends Gui
             flag1 = false;
         }
 
-        i1 = player.func_110143_aJ();
+        i1 = player.getHealth();
         j1 = player.prevHealth;
         this.rand.setSeed(this.updateCounter * 312871);
 

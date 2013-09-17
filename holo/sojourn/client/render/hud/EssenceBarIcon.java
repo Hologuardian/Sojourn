@@ -43,7 +43,7 @@ public class EssenceBarIcon extends Gui
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
-        this.mc.func_110434_K().func_110577_a(Textures.essenceBar);
+        mc.getTextureManager().bindTexture(Textures.essenceBar);
         
         int x = posX;
         int x1 = 0;

@@ -716,4 +716,9 @@ public class MoltarChunkProvider implements IChunkProvider
             this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
         }
     }
+
+	@Override
+	public void saveExtraData() {
+		
+	}
 }
